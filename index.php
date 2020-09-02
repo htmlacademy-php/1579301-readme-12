@@ -34,9 +34,17 @@ $cards = [
     ],
 ];
 
-function cutPosts($string, $numCharacters = 300)
+/**
+ * Обрезает текст до указанной длины и
+ * добавляет в конце знак троеточия
+ * @param string $string Строка для обрезания
+ * @param integer $length Длина строки
+ *
+ * @return string Обрезанная строка
+ */
+function cutText(string $string, int $length = 300) : string
 {
-    $wordsArray = explode(' ', $string[0]['content']);
+    $wordsArray = explode(' ', $string);
 
     $countCharacters = 0;
 
@@ -48,7 +56,7 @@ function cutPosts($string, $numCharacters = 300)
 
         $countCharacters += mb_strlen($word);
 
-        if ($countCharacters > $numCharacters) {
+        if ($countCharacters > $length) {
 
             return implode(' ', $newArray) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>';
 
@@ -58,8 +66,6 @@ function cutPosts($string, $numCharacters = 300)
     return implode(' ', $newArray);
 
 };
-
-$cutPosts = cutPosts($cards);
 
 $user_name = 'Dima'; // укажите здесь ваше имя
 ?>
@@ -272,7 +278,7 @@ $user_name = 'Dima'; // укажите здесь ваше имя
                     <?php if ($card['type'] === 'post-quote') : ?>
                         <blockquote>
                             <p>
-                                <?= $cutPosts ?>
+                                <?= cutText($card['content']) ?>
                             </p>
                             <cite>Неизвестный Автор</cite>
                         </blockquote>
