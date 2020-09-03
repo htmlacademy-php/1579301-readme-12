@@ -2,35 +2,35 @@
 $is_auth = rand(0, 1);
 
 $cards = [
-    ['header' => 'Цитата',
-        'type' => 'post-quote',
-        'content' => 'Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих',
-        'userName' => 'Лариса',
-        'userPic' => 'userpic-larisa-small.jpg',
+    [    'header' => 'Цитата',
+         'type' => 'post-quote',
+         'content' => 'Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих',
+         'userName' => 'Лариса',
+         'userPic' => 'userpic-larisa-small.jpg',
     ],
-    ['header' => 'Игра престолов',
-        'type' => 'post-text',
-        'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
-        'userName' => 'Владик',
-        'userPic' => 'userpic.jpg',
+    [    'header' => 'Игра престолов',
+         'type' => 'post-text',
+         'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
+         'userName' => 'Владик',
+         'userPic' => 'userpic.jpg',
     ],
-    ['header' => 'Наконец, обработал фотки!',
-        'type' => 'post-photo',
-        'content' => 'rock-medium.jpg',
-        'userName' => 'Виктор',
-        'userPic' => 'userpic-mark.jpg',
+    [    'header' => 'Наконец, обработал фотки!',
+         'type' => 'post-photo',
+         'content' => 'rock-medium.jpg',
+         'userName' => 'Виктор',
+         'userPic' => 'userpic-mark.jpg',
     ],
-    ['header' => 'Моя мечта',
-        'type' => 'post-photo',
-        'content' => 'coast-medium.jpg',
-        'userName' => 'Лариса',
-        'userPic' => 'userpic-larisa-small.jpg',
+    [    'header' => 'Моя мечта',
+         'type' => 'post-photo',
+         'content' => 'coast-medium.jpg',
+         'userName' => 'Лариса',
+         'userPic' => 'userpic-larisa-small.jpg',
     ],
-    ['header' => 'Лучшие курсы',
-        'type' => 'post-link',
-        'content' => 'www.htmlacademy.ru',
-        'userName' => 'Владик',
-        'userPic' => 'userpic.jpg',
+    [    'header' => 'Лучшие курсы',
+         'type' => 'post-link',
+         'content' => 'www.htmlacademy.ru',
+         'userName' => 'Владик',
+         'userPic' => 'userpic.jpg',
     ],
 ];
 
@@ -45,27 +45,20 @@ $cards = [
 function cutText(string $string, int $length = 300) : string
 {
     $wordsArray = explode(' ', $string);
-
-    $countCharacters = 0;
-
+    $countSpaces = substr_count($string, ' ');
+    $countCharacters = 0 + $countSpaces;
     $newArray = [];
 
     foreach ($wordsArray as $word) {
-
         $newArray[] = $word;
-
         $countCharacters += mb_strlen($word);
 
         if ($countCharacters > $length) {
-
-            return implode(' ', $newArray) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>';
-
+            return implode(' ', $newArray);
         }
     }
-
     return implode(' ', $newArray);
-
-};
+}
 
 $user_name = 'Dima'; // укажите здесь ваше имя
 ?>
@@ -278,12 +271,12 @@ $user_name = 'Dima'; // укажите здесь ваше имя
                     <?php if ($card['type'] === 'post-quote') : ?>
                         <blockquote>
                             <p>
-                                <?= cutText($card['content']) ?>
+                                <?= (cutText($card['content']) < $card['content']) ? cutText($card['content']) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : cutText($card['content']) ?>
                             </p>
                             <cite>Неизвестный Автор</cite>
                         </blockquote>
                     <?php  elseif ($card['type'] === 'post-text') : ?>
-                        <p><?= $card['content'] ?></p>
+                        <p><?= (cutText($card['content']) < $card['content']) ? cutText($card['content']) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : cutText($card['content']) ?></p>
                     <?php  elseif ($card['type'] === 'post-photo') : ?>
                         <div class="post-photo__image-wrapper">
                             <img src="img/<?= $card['content'] ?>" alt="Фото от пользователя" width="360" height="240">
@@ -299,7 +292,7 @@ $user_name = 'Dima'; // укажите здесь ваше имя
                                         <h3><?= $card['header'] ?>></h3>
                                     </div>
                                 </div>
-                                <span><?= $card['content']?></span>
+                                <span><?= (cutText($card['content']) < $card['content']) ? cutText($card['content']) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : cutText($card['content']) ?></span>
                             </a>
                         </div>
                     <?php endif; ?>
