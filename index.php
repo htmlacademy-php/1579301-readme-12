@@ -44,21 +44,37 @@ $cards = [
  */
 function cutText(string $string, int $length = 300) : string
 {
-    $wordsArray = explode(' ', $string);
-    $countSpaces = substr_count($string, ' ');
-    $countCharacters = 0 + $countSpaces;
-    $newArray = [];
+    if (mb_strlen($string) > $length || $string == '')
+    {
+        $words = preg_split('/\s/', $string);
+        $output = '';
+        $i = 0;
 
-    foreach ($wordsArray as $word) {
-        $newArray[] = $word;
-        $countCharacters += mb_strlen($word);
+        while (1)
+        {
+            $newlength = mb_strlen($output) + mb_strlen($words[$i]);
 
-        if ($countCharacters > $length) {
-            return implode(' ', $newArray);
+            if ($newlength > $length)
+            {
+                break;
+            }
+            else {
+                $output .= $words[$i] . " ";
+                $i++;
+            }
         }
     }
-    return implode(' ', $newArray);
+    else {
+        return $string;
+    }
+    $string = $output;
+    return $string;
 }
+
+$str = 'a b c d e f j h';
+$result = cutText($str, 10);
+
+var_dump($result);
 
 $user_name = 'Dima'; // укажите здесь ваше имя
 ?>
@@ -271,12 +287,13 @@ $user_name = 'Dima'; // укажите здесь ваше имя
                     <?php if ($card['type'] === 'post-quote') : ?>
                         <blockquote>
                             <p>
-                                <?= (cutText($card['content']) < $card['content']) ? cutText($card['content']) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : cutText($card['content']) ?>
+                                <?= (mb_strlen(cutText($card['content'])) < mb_strlen($card['content'])) ? cutText($card['content']) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : cutText($card['content']) ?>
+                            <?= mb_strlen(cutText($card['content'])) ?>
                             </p>
                             <cite>Неизвестный Автор</cite>
                         </blockquote>
                     <?php  elseif ($card['type'] === 'post-text') : ?>
-                        <p><?= (cutText($card['content']) < $card['content']) ? cutText($card['content']) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : cutText($card['content']) ?></p>
+                        <p><?= (mb_strlen(cutText($card['content'])) < mb_strlen($card['content'])) ? cutText($card['content']) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : cutText($card['content']) ?></p>
                     <?php  elseif ($card['type'] === 'post-photo') : ?>
                         <div class="post-photo__image-wrapper">
                             <img src="img/<?= $card['content'] ?>" alt="Фото от пользователя" width="360" height="240">
@@ -292,7 +309,7 @@ $user_name = 'Dima'; // укажите здесь ваше имя
                                         <h3><?= $card['header'] ?>></h3>
                                     </div>
                                 </div>
-                                <span><?= (cutText($card['content']) < $card['content']) ? cutText($card['content']) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : cutText($card['content']) ?></span>
+                                <span><?= (mb_strlen(cutText($card['content'])) < mb_strlen($card['content'])) ? cutText($card['content']) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : cutText($card['content']) ?></span>
                             </a>
                         </div>
                     <?php endif; ?>
