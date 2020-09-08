@@ -44,37 +44,22 @@ $cards = [
  */
 function cutText(string $string, int $length = 300) : string
 {
-    if (mb_strlen($string) > $length || $string == '')
-    {
-        $words = preg_split('/\s/', $string);
-        $output = '';
-        $i = 0;
+    $wordsArray = explode(' ', $string);
+    $countCharacters = 0;
+    $newArray = [];
 
-        while (1)
-        {
-            $newlength = mb_strlen($output) + mb_strlen($words[$i]);
+    foreach ($wordsArray as $word) {
+        $countCharacters += mb_strlen($word);
 
-            if ($newlength > $length)
-            {
-                break;
-            }
-            else {
-                $output .= $words[$i] . " ";
-                $i++;
-            }
+        if ($countCharacters <= $length) {
+            $newArray[] = $word;
+            $countCharacters += 1; // прибавляем пробел
+        } else {
+            break;
         }
     }
-    else {
-        return $string;
-    }
-    $string = $output;
-    return $string;
+    return implode(' ', $newArray);
 }
-
-$str = 'a b c d e f j h';
-$result = cutText($str, 10);
-
-var_dump($result);
 
 $user_name = 'Dima'; // укажите здесь ваше имя
 ?>
@@ -288,7 +273,6 @@ $user_name = 'Dima'; // укажите здесь ваше имя
                         <blockquote>
                             <p>
                                 <?= (mb_strlen(cutText($card['content'])) < mb_strlen($card['content'])) ? cutText($card['content']) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : cutText($card['content']) ?>
-                            <?= mb_strlen(cutText($card['content'])) ?>
                             </p>
                             <cite>Неизвестный Автор</cite>
                         </blockquote>
