@@ -2,37 +2,64 @@
 $is_auth = rand(0, 1);
 
 $cards = [
-    ['header' => 'Цитата',
-     'type' => 'post-quote',
-     'content' => 'Мы в жизни любим только раз, а после ищем лишь похожих',
-     'userName' => 'Лариса',
-     'userPic' => 'userpic-larisa-small.jpg',
+    [    'header' => 'Цитата',
+         'type' => 'post-quote',
+         'content' => 'Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих.Мы в жизни любим только раз, а после ищем лишь похожих',
+         'userName' => 'Лариса',
+         'userPic' => 'userpic-larisa-small.jpg',
     ],
-    ['header' => 'Игра престолов',
-     'type' => 'post-text',
-     'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
-     'userName' => 'Владик',
-     'userPic' => 'userpic.jpg',
+    [    'header' => 'Игра престолов',
+         'type' => 'post-text',
+         'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
+         'userName' => 'Владик',
+         'userPic' => 'userpic.jpg',
     ],
-    ['header' => 'Наконец, обработал фотки!',
-     'type' => 'post-photo',
-     'content' => 'rock-medium.jpg',
-     'userName' => 'Виктор',
-     'userPic' => 'userpic-mark.jpg',
+    [    'header' => 'Наконец, обработал фотки!',
+         'type' => 'post-photo',
+         'content' => 'rock-medium.jpg',
+         'userName' => 'Виктор',
+         'userPic' => 'userpic-mark.jpg',
     ],
-    ['header' => 'Моя мечта',
-     'type' => 'post-photo',
-     'content' => 'coast-medium.jpg',
-     'userName' => 'Лариса',
-     'userPic' => 'userpic-larisa-small.jpg',
+    [    'header' => 'Моя мечта',
+         'type' => 'post-photo',
+         'content' => 'coast-medium.jpg',
+         'userName' => 'Лариса',
+         'userPic' => 'userpic-larisa-small.jpg',
     ],
-    ['header' => 'Лучшие курсы',
-     'type' => 'post-link',
-     'content' => 'www.htmlacademy.ru',
-     'userName' => 'Владик',
-     'userPic' => 'userpic.jpg',
+    [    'header' => 'Лучшие курсы',
+         'type' => 'post-link',
+         'content' => 'www.htmlacademy.ru',
+         'userName' => 'Владик',
+         'userPic' => 'userpic.jpg',
     ],
 ];
+
+/**
+ * Обрезает текст до указанной длины и
+ * добавляет в конце знак троеточия
+ * @param string $string Строка для обрезания
+ * @param integer $length Длина строки
+ *
+ * @return string Обрезанная строка
+ */
+function cutText(string $string, int $length = 300) : string
+{
+    $wordsArray = explode(' ', $string);
+    $countCharacters = 0;
+    $newArray = [];
+
+    foreach ($wordsArray as $word) {
+        $countCharacters += mb_strlen($word);
+
+        if ($countCharacters <= $length) {
+            $newArray[] = $word;
+            $countCharacters += 1; // прибавляем пробел
+        } else {
+            break;
+        }
+    }
+    return implode(' ', $newArray);
+}
 
 $user_name = 'Dima'; // укажите здесь ваше имя
 ?>
@@ -243,32 +270,32 @@ $user_name = 'Dima'; // укажите здесь ваше имя
                 </header>
                 <div class="post__main">
                     <?php if ($card['type'] === 'post-quote') : ?>
-                    <blockquote>
-                        <p>
-                            <?= $card['content'] ?>
-                        </p>
-                        <cite>Неизвестный Автор</cite>
-                    </blockquote>
+                        <blockquote>
+                            <p>
+                                <?= (mb_strlen(cutText($card['content'])) < mb_strlen($card['content'])) ? cutText($card['content']) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : cutText($card['content']) ?>
+                            </p>
+                            <cite>Неизвестный Автор</cite>
+                        </blockquote>
                     <?php  elseif ($card['type'] === 'post-text') : ?>
-                    <p><?= $card['content'] ?></p>
+                        <p><?= (mb_strlen(cutText($card['content'])) < mb_strlen($card['content'])) ? cutText($card['content']) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : cutText($card['content']) ?></p>
                     <?php  elseif ($card['type'] === 'post-photo') : ?>
-                    <div class="post-photo__image-wrapper">
-                        <img src="img/<?= $card['content'] ?>" alt="Фото от пользователя" width="360" height="240">
-                    </div>
+                        <div class="post-photo__image-wrapper">
+                            <img src="img/<?= $card['content'] ?>" alt="Фото от пользователя" width="360" height="240">
+                        </div>
                     <?php  elseif ($card['type'] === 'post-link') : ?>
-                    <div class="post-link__wrapper">
-                        <a class="post-link__external" href="http://" title="Перейти по ссылке">
-                            <div class="post-link__info-wrapper">
-                                <div class="post-link__icon-wrapper">
-                                    <img src="https://www.google.com/s2/favicons?domain=vitadental.ru" alt="Иконка">
+                        <div class="post-link__wrapper">
+                            <a class="post-link__external" href="http://" title="Перейти по ссылке">
+                                <div class="post-link__info-wrapper">
+                                    <div class="post-link__icon-wrapper">
+                                        <img src="https://www.google.com/s2/favicons?domain=vitadental.ru" alt="Иконка">
+                                    </div>
+                                    <div class="post-link__info">
+                                        <h3><?= $card['header'] ?>></h3>
+                                    </div>
                                 </div>
-                                <div class="post-link__info">
-                                    <h3><?= $card['header'] ?>></h3>
-                                </div>
-                            </div>
-                            <span><?= $card['content']?></span>
-                        </a>
-                    </div>
+                                <span><?= (mb_strlen(cutText($card['content'])) < mb_strlen($card['content'])) ? cutText($card['content']) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : cutText($card['content']) ?></span>
+                            </a>
+                        </div>
                     <?php endif; ?>
                 </div>
                 <footer class="post__footer">
@@ -307,7 +334,7 @@ $user_name = 'Dima'; // укажите здесь ваше имя
                     </div>
                 </footer>
             </article>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>
