@@ -1,3 +1,54 @@
+<?php
+
+function generate_random_date($index)
+{
+    $deltas = [['minutes' => 59], ['hours' => 23], ['days' => 6], ['weeks' => 4], ['months' => 11]];
+    $dcnt = count($deltas);
+
+    if ($index < 0) {
+        $index = 0;
+    }
+
+    if ($index >= $dcnt) {
+        $index = $dcnt - 1;
+    }
+
+    $delta = $deltas[$index];
+    $timeval = rand(1, current($delta));
+    $timename = key($delta);
+
+    $ts = strtotime("$timeval $timename ago");
+    $dt = date('Y-m-d H:i:s', $ts);
+
+    return $dt;
+}
+
+function get_noun_plural_form(int $number, string $one, string $two, string $many): string
+{
+    $number = (int)$number;
+    $mod10 = $number % 10;
+    $mod100 = $number % 100;
+
+    switch (true) {
+        case ($mod100 >= 11 && $mod100 <= 20):
+            return $many;
+
+        case ($mod10 > 5):
+            return $many;
+
+        case ($mod10 === 1):
+            return $one;
+
+        case ($mod10 >= 2 && $mod10 <= 4):
+            return $two;
+
+        default:
+            return $many;
+    }
+}
+
+?>
+
 <div class="container">
         <h1 class="page__title page__title--popular">Популярное</h1>
     </div>
@@ -84,7 +135,7 @@
             </div>
         </div>
         <div class="popular__posts">
-            <?php foreach ($cards as $card) : ?>
+            <?php foreach ($cards as $i => $card) : ?>
             <article class="popular__post <?= $card['type'] ?> post">
                 <header class="post__header">
                     <h2><?= htmlspecialchars($card['header']) ?></h2>
@@ -128,7 +179,23 @@
                             </div>
                             <div class="post__info">
                                 <b class="post__author-name"><?= htmlspecialchars($card['userName']) ?></b>
-                                <time class="post__time" datetime="">дата</time>
+                                <?php
+                                $currentTime = time();
+                                $randomDate = generate_random_date($i);
+                                $postTime = strtotime($randomDate);
+                                $relativeTimeSec = $currentTime - $postTime;
+                                $relativeTimeMin = $relativeTimeSec / 60;
+                                ?>
+                                <time class="post__time" datetime="<?= $randomDate ?>">
+                                    <?php
+                                        if ($relativeTimeMin < 60) : echo $relativeTimeMin . get_noun_plural_form($relativeTimeMin, ' минута', ' минуты', ' минут') . ' назад';
+                                            elseif (60 < $relativeTimeMin && $relativeTimeMin < 1440) : echo $relativeTimeMin / 60 . get_noun_plural_form($relativeTimeMin / 60, ' час', ' часа', ' часов') . ' назад';
+                                            elseif (1440 < $relativeTimeMin && $relativeTimeMin < 34560) : echo $relativeTimeMin / 1440 . get_noun_plural_form($relativeTimeMin / 1440, ' день', ' дня', ' дней') . ' назад';
+                                            elseif (34560 < $relativeTimeMin && $relativeTimeMin < 172800) : echo floor($relativeTimeMin / 34560) . get_noun_plural_form($relativeTimeMin / 34560, ' неделю', ' недели', ' недель') . ' назад';
+                                            elseif (172800 < $relativeTimeMin) : echo floor($relativeTimeMin / 172800) . get_noun_plural_form($relativeTimeMin / 172800, ' месяц', ' месяца', ' месяцев') . ' назад';
+                                        endif;
+                                    ?>
+                                </time>
                             </div>
                         </a>
                     </div>
