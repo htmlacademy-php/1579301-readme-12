@@ -189,10 +189,10 @@ function get_noun_plural_form(int $number, string $one, string $two, string $man
                                 <time class="post__time" datetime="<?= $randomDate ?>">
                                     <?php
                                         if ($relativeTimeMin < 60) : echo $relativeTimeMin . get_noun_plural_form($relativeTimeMin, ' минута', ' минуты', ' минут') . ' назад';
-                                            elseif (60 < $relativeTimeMin && $relativeTimeMin < 1440) : echo $relativeTimeMin / 60 . get_noun_plural_form($relativeTimeMin / 60, ' час', ' часа', ' часов') . ' назад';
-                                            elseif (1440 < $relativeTimeMin && $relativeTimeMin < 34560) : echo $relativeTimeMin / 1440 . get_noun_plural_form($relativeTimeMin / 1440, ' день', ' дня', ' дней') . ' назад';
-                                            elseif (34560 < $relativeTimeMin && $relativeTimeMin < 172800) : echo floor($relativeTimeMin / 34560) . get_noun_plural_form($relativeTimeMin / 34560, ' неделю', ' недели', ' недель') . ' назад';
-                                            elseif (172800 < $relativeTimeMin) : echo floor($relativeTimeMin / 172800) . get_noun_plural_form($relativeTimeMin / 172800, ' месяц', ' месяца', ' месяцев') . ' назад';
+                                            elseif (60 <= $relativeTimeMin && $relativeTimeMin < 1440) : echo $relativeTimeMin / 60 . get_noun_plural_form($relativeTimeMin / 60, ' час', ' часа', ' часов') . ' назад';
+                                            elseif (1440 <= $relativeTimeMin && $relativeTimeMin < 34560) : echo $relativeTimeMin / 1440 . get_noun_plural_form($relativeTimeMin / 1440, ' день', ' дня', ' дней') . ' назад';
+                                            elseif (34560 <= $relativeTimeMin && $relativeTimeMin < 172800) : echo floor($relativeTimeMin / 34560) . get_noun_plural_form($relativeTimeMin / 34560, ' неделю', ' недели', ' недель') . ' назад';
+                                            elseif (172800 <= $relativeTimeMin) : echo floor($relativeTimeMin / 172800) . get_noun_plural_form($relativeTimeMin / 172800, ' месяц', ' месяца', ' месяцев') . ' назад';
                                         endif;
                                     ?>
                                 </time>
