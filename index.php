@@ -42,48 +42,6 @@ $cards = [
     ],
 ];
 
-/**
- * Обрезает текст до указанной длины и
- * добавляет в конце знак троеточия
- * @param string $string Строка для обрезания
- * @param integer $length Длина строки
- *
- * @return string Обрезанная строка
- */
-function cutText(string $string, int $length = 300) : string
-{
-    $wordsArray = explode(' ', $string);
-    $countCharacters = 0;
-    $newArray = [];
-
-    foreach ($wordsArray as $word) {
-        $countCharacters += mb_strlen($word);
-
-        if ($countCharacters <= $length) {
-            $newArray[] = $word;
-            $countCharacters += 1; // прибавляем пробел
-        } else {
-            break;
-        }
-    }
-    return implode(' ', $newArray);
-}
-
-function timePassedAfterPublication($relativeTimeMin)
-{
-    if ($relativeTimeMin < 60) {
-        return $relativeTimeMin . get_noun_plural_form($relativeTimeMin, ' минута', ' минуты', ' минут') . ' назад';
-    } elseif (60 <= $relativeTimeMin && $relativeTimeMin < 1440) {
-        return $relativeTimeMin / 60 . get_noun_plural_form($relativeTimeMin / 60, ' час', ' часа', ' часов') . ' назад';
-    } elseif (1440 <= $relativeTimeMin && $relativeTimeMin < 34560) {
-        return $relativeTimeMin / 1440 . get_noun_plural_form($relativeTimeMin / 1440, ' день', ' дня', ' дней') . ' назад';
-    } elseif (34560 <= $relativeTimeMin && $relativeTimeMin < 172800) {
-        return floor($relativeTimeMin / 34560) . get_noun_plural_form($relativeTimeMin / 34560, ' неделю', ' недели', ' недель') . ' назад';
-    } elseif (172800 <= $relativeTimeMin) {
-        return floor($relativeTimeMin / 172800) . get_noun_plural_form($relativeTimeMin / 172800, ' месяц', ' месяца', ' месяцев') . ' назад';
-    }
-}
-
 $user_name = 'Dima'; // укажите здесь ваше имя
 
 $title = 'readme';

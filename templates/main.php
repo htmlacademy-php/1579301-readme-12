@@ -84,7 +84,7 @@
             </div>
         </div>
         <div class="popular__posts">
-            <?php foreach ($cards as $i => $card) : ?>
+            <?php foreach ($cards as $card) : ?>
             <article class="popular__post <?= $card['type'] ?> post">
                 <header class="post__header">
                     <h2><?= htmlspecialchars($card['header']) ?></h2>
@@ -128,15 +128,9 @@
                             </div>
                             <div class="post__info">
                                 <b class="post__author-name"><?= htmlspecialchars($card['userName']) ?></b>
-                                <?php
-                                $currentTime = time();
-                                $postTime = strtotime($card['publicTime']);
-                                $relativeTimeSec = $currentTime - $postTime;
-                                $relativeTimeMin = $relativeTimeSec / 60;
-                                ?>
                                 <time class="post__time" datetime="<?= $card['publicTime'] ?>">
                                     <?php
-                                        echo timePassedAfterPublication($relativeTimeMin);
+                                        echo timePassedAfterPublication($card['publicTime']);
                                     ?>
                                 </time>
                             </div>
