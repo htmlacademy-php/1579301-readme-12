@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД'
  *
@@ -303,22 +305,26 @@ define('FIVE_WEEKS', 50400);
 function timePassedAfterPublication(string $postTime) : string
 {
     $currentTime = time();
-    $relativeTimeSec = $currentTime - strtotime($postTime);
-    $relativeTimeMin = $relativeTimeSec / 60;
 
-    if ($relativeTimeMin < HOUR) {
-        return $relativeTimeMin . get_noun_plural_form($relativeTimeMin, ' минута', ' минуты', ' минут') . ' назад';
-    }
-    if (HOUR <= $relativeTimeMin && $relativeTimeMin < DAY) {
-        return $relativeTimeMin / HOUR . get_noun_plural_form($relativeTimeMin / HOUR, ' час', ' часа', ' часов') . ' назад';
-    }
-    if (DAY <= $relativeTimeMin && $relativeTimeMin < WEEK) {
-        return $relativeTimeMin / DAY . get_noun_plural_form($relativeTimeMin / DAY, ' день', ' дня', ' дней') . ' назад';
-    }
-    if (WEEK <= $relativeTimeMin && $relativeTimeMin < FIVE_WEEKS) {
-        return floor($relativeTimeMin / WEEK) . get_noun_plural_form($relativeTimeMin / WEEK, ' неделю', ' недели', ' недель') . ' назад';
-    }
-    if (FIVE_WEEKS <= $relativeTimeMin) {
+    if ($currentTime > strtotime($postTime)) {
+
+        $relativeTimeSec = $currentTime - strtotime($postTime);
+        $relativeTimeMin = $relativeTimeSec / 60;
+
+        if ($relativeTimeMin < HOUR) {
+            return $relativeTimeMin . get_noun_plural_form($relativeTimeMin, ' минута', ' минуты', ' минут') . ' назад';
+        }
+        if (HOUR <= $relativeTimeMin && $relativeTimeMin < DAY) {
+            return $relativeTimeMin / HOUR . get_noun_plural_form($relativeTimeMin / HOUR, ' час', ' часа', ' часов') . ' назад';
+        }
+        if (DAY <= $relativeTimeMin && $relativeTimeMin < WEEK) {
+            return $relativeTimeMin / DAY . get_noun_plural_form($relativeTimeMin / DAY, ' день', ' дня', ' дней') . ' назад';
+        }
+        if (WEEK <= $relativeTimeMin && $relativeTimeMin < FIVE_WEEKS) {
+            return floor($relativeTimeMin / WEEK) . get_noun_plural_form($relativeTimeMin / WEEK, ' неделю', ' недели', ' недель') . ' назад';
+        }
         return floor($relativeTimeMin / MONTH) . get_noun_plural_form($relativeTimeMin / MONTH, ' месяц', ' месяца', ' месяцев') . ' назад';
+    } else {
+        return "0 минут назад";
     }
 }
