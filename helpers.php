@@ -292,6 +292,7 @@ function cutText(string $string, int $length = 300) : string
 define('HOUR', 60);
 define('DAY', 1440);
 define('WEEK', 10080);
+define('MONTH', 43800);
 define('FIVE_WEEKS', 50400);
 /**
  * Показывает дату в виде количества прошедших с данного
@@ -318,6 +319,6 @@ function timePassedAfterPublication(string $postTime) : string
         return floor($relativeTimeMin / WEEK) . get_noun_plural_form($relativeTimeMin / WEEK, ' неделю', ' недели', ' недель') . ' назад';
     }
     if (FIVE_WEEKS <= $relativeTimeMin) {
-        return floor($relativeTimeMin / FIVE_WEEKS) . get_noun_plural_form($relativeTimeMin / FIVE_WEEKS, ' месяц', ' месяца', ' месяцев') . ' назад';
+        return floor($relativeTimeMin / MONTH) . get_noun_plural_form($relativeTimeMin / MONTH, ' месяц', ' месяца', ' месяцев') . ' назад';
     }
 }
