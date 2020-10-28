@@ -291,8 +291,8 @@ function cutText(string $string, int $length = 300) : string
 
 define('HOUR', 60);
 define('DAY', 1440);
-define('WEEK', 34560);
-define('MONTH', 172800);
+define('WEEK', 10080);
+define('FIVE_WEEKS', 50400);
 /**
  * Показывает дату в виде количества прошедших с данного
  * момента минут, часов, дней, недель или месяцев.
@@ -314,10 +314,10 @@ function timePassedAfterPublication(string $postTime) : string
     if (DAY <= $relativeTimeMin && $relativeTimeMin < WEEK) {
         return $relativeTimeMin / DAY . get_noun_plural_form($relativeTimeMin / DAY, ' день', ' дня', ' дней') . ' назад';
     }
-    if (WEEK <= $relativeTimeMin && $relativeTimeMin < MONTH) {
+    if (WEEK <= $relativeTimeMin && $relativeTimeMin < FIVE_WEEKS) {
         return floor($relativeTimeMin / WEEK) . get_noun_plural_form($relativeTimeMin / WEEK, ' неделю', ' недели', ' недель') . ' назад';
     }
-    if (MONTH <= $relativeTimeMin) {
-        return floor($relativeTimeMin / MONTH) . get_noun_plural_form($relativeTimeMin / MONTH, ' месяц', ' месяца', ' месяцев') . ' назад';
+    if (FIVE_WEEKS <= $relativeTimeMin) {
+        return floor($relativeTimeMin / FIVE_WEEKS) . get_noun_plural_form($relativeTimeMin / FIVE_WEEKS, ' месяц', ' месяца', ' месяцев') . ' назад';
     }
 }
