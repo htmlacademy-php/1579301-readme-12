@@ -262,6 +262,7 @@ function generate_random_date($index)
 
     return $dt;
 }
+
 /**
  * Обрезает текст до указанной длины и
  * добавляет в конце знак троеточия
@@ -295,10 +296,10 @@ define('MONTH', 172800);
 /**
  * Показывает дату в виде количества прошедших с данного
  * момента минут, часов, дней, недель или месяцев.
- * @param string $postTime Cлучайно сформированная дата в виде Y-m-d H:i:s
+ * @param string $postTime Дата в виде Y-m-d H:i:s
  * @return string Cтрока с относительной датой
  */
-function timePassedAfterPublication($postTime) : string
+function timePassedAfterPublication(string $postTime) : string
 {
     $currentTime = time();
     $relativeTimeSec = $currentTime - strtotime($postTime);
