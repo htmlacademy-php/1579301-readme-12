@@ -128,7 +128,11 @@
                             </div>
                             <div class="post__info">
                                 <b class="post__author-name"><?= htmlspecialchars($card['userName']) ?></b>
-                                <time class="post__time" datetime="">дата</time>
+                                <time class="post__time" datetime="<?= $card['publicTime'] ?>">
+                                    <?php
+                                        echo timePassedAfterPublication($card['publicTime']);
+                                    ?>
+                                </time>
                             </div>
                         </a>
                     </div>

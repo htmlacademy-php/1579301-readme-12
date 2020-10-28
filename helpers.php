@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД'
  *
@@ -261,4 +263,68 @@ function generate_random_date($index)
     $dt = date('Y-m-d H:i:s', $ts);
 
     return $dt;
+}
+
+/**
+ * Обрезает текст до указанной длины и
+ * добавляет в конце знак троеточия
+ * @param string $string Строка для обрезания
+ * @param integer $length Длина строки
+ * @return string Обрезанная строка
+ */
+function cutText(string $string, int $length = 300) : string
+{
+    $wordsArray = explode(' ', $string);
+    $countCharacters = 0;
+    $newArray = [];
+
+    foreach ($wordsArray as $word) {
+        $countCharacters += mb_strlen($word);
+
+        if ($countCharacters <= $length) {
+            $newArray[] = $word;
+            $countCharacters += 1; // прибавляем пробел
+        } else {
+            break;
+        }
+    }
+    return implode(' ', $newArray);
+}
+
+define('HOUR', 60);
+define('DAY', 1440);
+define('WEEK', 10080);
+define('MONTH', 43800);
+define('FIVE_WEEKS', 50400);
+/**
+ * Показывает дату в виде количества прошедших с данного
+ * момента минут, часов, дней, недель или месяцев.
+ * @param string $postTime Дата в виде Y-m-d H:i:s
+ * @return string Cтрока с относительной датой
+ */
+function timePassedAfterPublication(string $postTime) : string
+{
+    $currentTime = time();
+
+    if ($currentTime > strtotime($postTime)) {
+
+        $relativeTimeSec = $currentTime - strtotime($postTime);
+        $relativeTimeMin = $relativeTimeSec / 60;
+
+        if ($relativeTimeMin < HOUR) {
+            return $relativeTimeMin . get_noun_plural_form($relativeTimeMin, ' минута', ' минуты', ' минут') . ' назад';
+        }
+        if (HOUR <= $relativeTimeMin && $relativeTimeMin < DAY) {
+            return $relativeTimeMin / HOUR . get_noun_plural_form($relativeTimeMin / HOUR, ' час', ' часа', ' часов') . ' назад';
+        }
+        if (DAY <= $relativeTimeMin && $relativeTimeMin < WEEK) {
+            return $relativeTimeMin / DAY . get_noun_plural_form($relativeTimeMin / DAY, ' день', ' дня', ' дней') . ' назад';
+        }
+        if (WEEK <= $relativeTimeMin && $relativeTimeMin < FIVE_WEEKS) {
+            return floor($relativeTimeMin / WEEK) . get_noun_plural_form($relativeTimeMin / WEEK, ' неделю', ' недели', ' недель') . ' назад';
+        }
+        return floor($relativeTimeMin / MONTH) . get_noun_plural_form($relativeTimeMin / MONTH, ' месяц', ' месяца', ' месяцев') . ' назад';
+    } else {
+        return "0 минут назад";
+    }
 }
