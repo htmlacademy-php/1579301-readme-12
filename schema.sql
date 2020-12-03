@@ -14,7 +14,7 @@ CREATE TABLE `content_type` (
   `name` varchar(100) NOT NULL,
   `class_icon` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `content_type` VALUES (1,'Текст','text'),(2,'Цитата','quote'),(3,'Картинка','photo'),(4,'Видео','video'),(5,'Ссылка','link');
 
@@ -64,11 +64,14 @@ CREATE TABLE `comment` (
   `content` text NOT NULL,
   `post_creator_id` int UNSIGNED NOT NULL,
   `post_id` int UNSIGNED NOT NULL,
+  `author_id` int UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
   KEY `comment_post_creator_id_idx` (`post_creator_id`),
   KEY `comment_post_id_idx` (`post_id`),
+  KEY `comment_author_id_idx` (`author_id`),
   CONSTRAINT `comment_post_creator_id_fk` FOREIGN KEY (`post_creator_id`) REFERENCES `post` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `comment_post_id_fk` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `comment_post_id_fk` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `comment_author_id_fk` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `like` (
