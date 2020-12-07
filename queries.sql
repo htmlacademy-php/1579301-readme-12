@@ -16,9 +16,9 @@ INSERT INTO `comment` VALUES (4, '2020-11-10 04:30:25', 'Скорее бы на 
 INSERT INTO `comment` VALUES (5, '2020-11-15 12:20:00', 'Тоже учился там, все хорошо!', 2, 5, 4);
 INSERT INTO `comment` VALUES (6, '2020-11-16 10:01:30', 'Хочу на море', 1, 4, 4);
 
-SELECT post.content, user.login, content_type.name FROM `post` LEFT JOIN `user` ON post.user_id = user.id LEFT JOIN `content_type` ON post.content_type_id = content_type.id WHERE `content` != 'NULL' order by `count_views`; /*Вывести контент, тип контента и логин создателя*/
-SELECT * FROM `post` LEFT JOIN `user` ON post.user_id = user.id WHERE `login` = 'larisa'; /*Вывести посты от польщователя с логином larisa*/
-SELECT comment.content, user.login FROM `comment` LEFT JOIN `post` ON comment.post_id = post.id LEFT JOIN `user` ON comment.post_creator_id = user.id WHERE `post_id` = 5; /*Вывести комменты и логины к посту №5*/
+SELECT post.content, user.login, content_type.name FROM `post` LEFT JOIN `user` ON post.user_id = user.id LEFT JOIN `content_type` ON post.content_type_id = content_type.id order by `count_views`; /*Вывести контент, тип контента и логин создателя*/
+SELECT * FROM `post` LEFT JOIN `user` ON post.user_id = user.id WHERE user.id = 1; /*Вывести посты от польщователя с id = 1*/
+SELECT comment.content, user.login FROM `comment` LEFT JOIN `user` ON comment.post_creator_id = user.id WHERE `post_id` = 5; /*Вывести комменты и логины к посту №5*/
 INSERT INTO `like` VALUE (1, 1, 2); /*Пользователь 1 поставил лайк первому посту посту */
 INSERT INTO `like` VALUE (1, 6, 2); /*Пользователь 6 поставил лайк второму посту */
 INSERT INTO `subscribe` VALUE (1, 1, 2); /*На пользователя 1 подписался пользователь 2*/
