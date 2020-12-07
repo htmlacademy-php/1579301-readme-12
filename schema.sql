@@ -1,13 +1,22 @@
 CREATE TABLE `user` (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `create_time` datetime NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `login` varchar(100) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `avatar` varchar(100) DEFAULT NULL,
+  `id`          int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `create_time` datetime     NOT NULL,
+  `email`       varchar(100) NOT NULL,
+  `login`       varchar(100) NOT NULL,
+  `password`    varchar(100) NOT NULL,
+  `avatar`      varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_email_udx` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+
+CREATE TABLE `content_type` (
+  `id`         int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name`       varchar(100) NOT NULL,
+  `class_icon` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+
+INSERT INTO `content_type` VALUES (1, 'Текст', 'text'),(2, 'Цитата', 'quote'),(3, 'Картинка', 'photo'),(4, 'Видео', 'video'),(5, 'Ссылка', 'link');
 
 CREATE TABLE `content_type` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -42,10 +51,10 @@ CREATE TABLE `post` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `hashtag` (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id`   int UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
 CREATE TABLE `post_hashtag` (
   `id` int UNSIGNED NOT NULL,
@@ -56,7 +65,7 @@ CREATE TABLE `post_hashtag` (
   KEY `post_hashtag_hashtag_id_idx` (`hashtag_id`),
   CONSTRAINT `post_hashtag_hashtag_id_fk` FOREIGN KEY (`hashtag_id`) REFERENCES `hashtag` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `post_hashtag_post_id_fk` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
 CREATE TABLE `comment` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -83,7 +92,7 @@ CREATE TABLE `like` (
   KEY `like_post_id_idx` (`post_id`),
   CONSTRAINT `like_post_id_fk` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `like_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
 CREATE TABLE `subscribe` (
   `id` int UNSIGNED NOT NULL,
@@ -94,7 +103,7 @@ CREATE TABLE `subscribe` (
   KEY `subscribe_subscriber_id_idx` (`subscriber_id`),
   CONSTRAINT `subscribe_author_id_fk` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `subscribe_subscriber_id_fk` FOREIGN KEY (`subscriber_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
 CREATE TABLE `message` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -108,6 +117,6 @@ CREATE TABLE `message` (
   KEY `message_recipient_id_idx` (`recipient_id`),
   CONSTRAINT `message_sender_id_fk` FOREIGN KEY (`sender_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `message_recipient_id_fk` FOREIGN KEY (`recipient_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
 
