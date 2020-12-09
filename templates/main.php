@@ -84,26 +84,26 @@
             </div>
         </div>
         <div class="popular__posts">
-            <?php foreach ($cards as $card) : ?>
-            <article class="popular__post <?= $card['type'] ?> post">
+            <?php foreach ($rowsPost as $post) : ?>
+            <article class="popular__post <?= $post['class_icon'] ?> post">
                 <header class="post__header">
-                    <h2><?= htmlspecialchars($card['header']) ?></h2>
+                    <h2><?= htmlspecialchars($post['header']) ?></h2>
                 </header>
                 <div class="post__main">
-                    <?php if ($card['type'] === 'post-quote') : ?>
+                    <?php if ($post['class_icon'] === 'post-quote') : ?>
                         <blockquote>
                             <p>
-                                <?= (mb_strlen(cutText($card['content'])) < mb_strlen($card['content'])) ? htmlspecialchars(cutText($card['content'])) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : htmlspecialchars(cutText($card['content'])) ?>
+                                <?= (mb_strlen(cutText($post['content'])) < mb_strlen($post['content'])) ? htmlspecialchars(cutText($post['content'])) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : htmlspecialchars(cutText($post['content'])) ?>
                             </p>
                             <cite>Неизвестный Автор</cite>
                         </blockquote>
-                    <?php  elseif ($card['type'] === 'post-text') : ?>
-                        <p><?= (mb_strlen(cutText($card['content'])) < mb_strlen($card['content'])) ? htmlspecialchars(cutText($card['content'])) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : htmlspecialchars(cutText($card['content'])) ?></p>
-                    <?php  elseif ($card['type'] === 'post-photo') : ?>
+                    <?php  elseif ($post['class_icon'] === 'post-text') : ?>
+                        <p><?= (mb_strlen(cutText($post['content'])) < mb_strlen($post['content'])) ? htmlspecialchars(cutText($post['content'])) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : htmlspecialchars(cutText($post['content'])) ?></p>
+                    <?php  elseif ($post['class_icon'] === 'post-photo') : ?>
                         <div class="post-photo__image-wrapper">
-                            <img src="img/<?= htmlspecialchars($card['content']) ?>" alt="Фото от пользователя" width="360" height="240">
+                            <img src="img/<?= htmlspecialchars($post['picture']) ?>" alt="Фото от пользователя" width="360" height="240">
                         </div>
-                    <?php  elseif ($card['type'] === 'post-link') : ?>
+                    <?php  elseif ($post['class_icon'] === 'post-link') : ?>
                         <div class="post-link__wrapper">
                             <a class="post-link__external" href="http://" title="Перейти по ссылке">
                                 <div class="post-link__info-wrapper">
@@ -111,10 +111,10 @@
                                         <img src="https://www.google.com/s2/favicons?domain=vitadental.ru" alt="Иконка">
                                     </div>
                                     <div class="post-link__info">
-                                        <h3><?= $card['header'] ?>></h3>
+                                        <h3><?= $post['header'] ?></h3>
                                     </div>
                                 </div>
-                                <span><?= (mb_strlen(cutText($card['content'])) < mb_strlen($card['content'])) ? htmlspecialchars(cutText($card['content'])) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : htmlspecialchars(cutText($card['content'])) ?></span>
+                                <span><?= (mb_strlen(cutText($post['link'])) < mb_strlen($post['link'])) ? htmlspecialchars(cutText($post['link'])) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : htmlspecialchars(cutText($post['link'])) ?></span>
                             </a>
                         </div>
                     <?php endif; ?>
@@ -124,13 +124,13 @@
                         <a class="post__author-link" href="#" title="Автор">
                             <div class="post__avatar-wrapper">
                                 <!--укажите путь к файлу аватара-->
-                                <img class="post__author-avatar" src="img/<?= htmlspecialchars($card['userPic']) ?>" alt="Аватар пользователя">
+                                <img class="post__author-avatar" src="img/<?= htmlspecialchars($post['avatar']) ?>" alt="Аватар пользователя">
                             </div>
                             <div class="post__info">
-                                <b class="post__author-name"><?= htmlspecialchars($card['userName']) ?></b>
-                                <time class="post__time" datetime="<?= $card['publicTime'] ?>">
+                                <b class="post__author-name"><?= htmlspecialchars($post['login']) ?></b>
+                                <time class="post__time" datetime="<?= $post['create_time'] ?>">
                                     <?php
-                                        echo timePassedAfterPublication($card['publicTime']);
+                                        echo timePassedAfterPublication($post['create_time']);
                                     ?>
                                 </time>
                             </div>

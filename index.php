@@ -1,7 +1,7 @@
 <?php
 
-require_once 'helpers.php';
 require_once 'connectdb.php';
+require_once 'helpers.php';
 
 $is_auth = rand(0, 1);
 
@@ -47,7 +47,7 @@ $user_name = 'Dima'; // укажите здесь ваше имя
 
 $title = 'readme';
 
-$mainContent = include_template('main.php', ['cards' => $cards]);
+$mainContent = include_template('main.php', ['rowsPost' => $rowsPost]);
 
 $layoutContent = include_template('layout.php', ['mainContent' => $mainContent, 'title' => $title, 'is_auth' => $is_auth, 'user_name' => $user_name]);
 

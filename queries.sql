@@ -20,7 +20,7 @@ SELECT post.content, user.login, content_type.name FROM `post` LEFT JOIN `user` 
 SELECT * FROM `post` LEFT JOIN `user` ON post.user_id = user.id WHERE user.id = 1; /*Вывести посты от польщователя с id = 1*/
 SELECT comment.content, user.login FROM `comment` LEFT JOIN `user` ON comment.post_creator_id = user.id WHERE `post_id` = 5; /*Вывести комменты и логины к посту №5*/
 INSERT INTO `like` VALUE (1, 1, 2); /*Пользователь 1 поставил лайк первому посту посту */
-INSERT INTO `like` VALUE (1, 6, 2); /*Пользователь 6 поставил лайк второму посту */
+INSERT INTO `like` VALUE (2, 4, 2); /*Пользователь 4 поставил лайк второму посту */
 INSERT INTO `subscribe` VALUE (1, 1, 2); /*На пользователя 1 подписался пользователь 2*/
-INSERT INTO `subscribe` VALUE (1, 1, 3); /*На пользователя 1 подписался пользователь 3*/
-INSERT INTO `subscribe` VALUE (1, 1, 4); /*На пользователя 1 подписался пользователь 4*/
+INSERT INTO `subscribe` VALUE (2, 1, 3); /*На пользователя 1 подписался пользователь 3*/
+INSERT INTO `subscribe` VALUE (3, 1, 4); /*На пользователя 1 подписался пользователь 4*/
