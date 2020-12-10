@@ -328,3 +328,32 @@ function timePassedAfterPublication(string $postTime) : string
         return "0 минут назад";
     }
 }
+
+/**
+ * @param $dbParams Hostname, Username, Password and Datebase
+ * @return false|mysqli
+ */
+function dbConnect($dbParams)
+{
+    extract($dbParams);
+
+    $connect = mysqli_connect($host, $user, $password, $database);
+
+    if (!$connect) {
+        exit("Ошибка подключения: " . mysqli_connect_error());
+    }
+    else {
+        mysqli_set_charset($connect, "utf8");
+        return $connect;
+    }
+}
+/**
+ * @param $connect
+ * @return array
+ */
+function getPosts($connect)
+{
+    $sqlPost = 'SELECT post.content, post.picture, post.link, post.header, post.create_time, user.login, user.avatar, content_type.class_icon FROM `post` LEFT JOIN `user` ON post.user_id = user.id LEFT JOIN `content_type` ON post.content_type_id = content_type.id order by `count_views` LIMIT 6';
+    $resultPost = mysqli_query($connect, $sqlPost);
+    return $rowsPost = mysqli_fetch_all($resultPost, MYSQLI_ASSOC);
+}

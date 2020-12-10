@@ -84,7 +84,7 @@
             </div>
         </div>
         <div class="popular__posts">
-            <?php foreach ($rowsPost as $post) : ?>
+            <?php foreach ($posts as $post) : ?>
             <article class="popular__post <?= $post['class_icon'] ?> post">
                 <header class="post__header">
                     <h2><?= htmlspecialchars($post['header']) ?></h2>
