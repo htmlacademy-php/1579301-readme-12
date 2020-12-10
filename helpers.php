@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД'
  *
@@ -330,28 +329,25 @@ function timePassedAfterPublication(string $postTime) : string
 }
 
 /**
- * @param $dbParams Hostname, Username, Password and Datebase
- * @return false|mysqli
+ * @param array $dbParams
+ * @return mysqli
  */
-function dbConnect($dbParams)
+function dbConnect(array $dbParams) : mysqli
 {
-    extract($dbParams);
-
-    $connect = mysqli_connect($host, $user, $password, $database);
+    $connect = mysqli_connect($dbParams['host'], $dbParams['user'], $dbParams['password'], $dbParams['database']);
 
     if (!$connect) {
         exit("Ошибка подключения: " . mysqli_connect_error());
     }
-    else {
-        mysqli_set_charset($connect, "utf8");
-        return $connect;
-    }
+    mysqli_set_charset($connect, "utf8");
+    return $connect;
 }
+
 /**
  * @param $connect
  * @return array
  */
-function getPosts($connect)
+function getPosts($connect) : array
 {
     $sqlPost = 'SELECT post.content, post.picture, post.link, post.header, post.create_time, user.login, user.avatar, content_type.class_icon FROM `post` LEFT JOIN `user` ON post.user_id = user.id LEFT JOIN `content_type` ON post.content_type_id = content_type.id order by `count_views` LIMIT 6';
     $resultPost = mysqli_query($connect, $sqlPost);
