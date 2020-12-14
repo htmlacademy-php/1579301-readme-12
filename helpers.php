@@ -131,7 +131,7 @@ function get_noun_plural_form(int $number, string $one, string $two, string $man
  * @param array $data Ассоциативный массив с данными для шаблона
  * @return string Итоговый HTML
  */
-function include_template($name, array $data = [])
+function include_template(string $name, array $data = [])
 {
     $name = 'templates/' . $name;
     $result = '';
@@ -242,7 +242,7 @@ function extract_youtube_id($youtube_url)
  * @param $index
  * @return false|string
  */
-function generate_random_date($index)
+function generate_random_date(int $index)
 {
     $deltas = [['minutes' => 59], ['hours' => 23], ['days' => 6], ['weeks' => 4], ['months' => 11]];
     $dcnt = count($deltas);
@@ -330,7 +330,7 @@ function timePassedAfterPublication(string $postTime) : string
 }
 
 /**
- * Подключаек к базе данных
+ * Подключает к базе данных
  * @param array $dbParams
  * @return mysqli
  */
@@ -347,10 +347,10 @@ function dbConnect(array $dbParams) : mysqli
 
 /**
  * Возвращает посты пользователя
- * @param array $connect
+ * @param mysqli $connect
  * @return array
  */
-function getPosts($connect) : array
+function getPosts(mysqli $connect) : array
 {
     $sqlPost = 'SELECT post.content, post.picture, post.link, post.header, post.create_time, user.login, user.avatar, content_type.class_icon FROM `post` LEFT JOIN `user` ON post.user_id = user.id LEFT JOIN `content_type` ON post.content_type_id = content_type.id order by `count_views` LIMIT 6';
     $resultPost = mysqli_query($connect, $sqlPost);
@@ -359,10 +359,10 @@ function getPosts($connect) : array
 
 /**
  * Возвращает тип контента
- * @param array $connect
+ * @param mysqli $connect
  * @return array
  */
-function getContentType($connect) : array
+function getContentType(mysqli $connect) : array
 {
     $sqlPost = 'SELECT `class_icon`, `width_icon`, `height_icon` FROM `content_type`';
     $resultPost = mysqli_query($connect, $sqlPost);
