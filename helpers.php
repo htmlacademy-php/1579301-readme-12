@@ -238,6 +238,7 @@ function extract_youtube_id($youtube_url)
 }
 
 /**
+ * Генерирует случайную дату в формате ГГГГ:ММ:ДД Ч:М:С
  * @param $index
  * @return false|string
  */
@@ -329,6 +330,7 @@ function timePassedAfterPublication(string $postTime) : string
 }
 
 /**
+ * Подключаек к базе данных
  * @param array $dbParams
  * @return mysqli
  */
@@ -344,12 +346,25 @@ function dbConnect(array $dbParams) : mysqli
 }
 
 /**
- * @param $connect
+ * Возвращает посты пользователя
+ * @param array $connect
  * @return array
  */
 function getPosts($connect) : array
 {
     $sqlPost = 'SELECT post.content, post.picture, post.link, post.header, post.create_time, user.login, user.avatar, content_type.class_icon FROM `post` LEFT JOIN `user` ON post.user_id = user.id LEFT JOIN `content_type` ON post.content_type_id = content_type.id order by `count_views` LIMIT 6';
     $resultPost = mysqli_query($connect, $sqlPost);
-    return $rowsPost = mysqli_fetch_all($resultPost, MYSQLI_ASSOC);
+    return mysqli_fetch_all($resultPost, MYSQLI_ASSOC);
+}
+
+/**
+ * Возвращает тип контента
+ * @param array $connect
+ * @return array
+ */
+function getContentType($connect) : array
+{
+    $sqlPost = 'SELECT `class_icon`, `width_icon`, `height_icon` FROM `content_type`';
+    $resultPost = mysqli_query($connect, $sqlPost);
+    return mysqli_fetch_all($resultPost, MYSQLI_ASSOC);
 }

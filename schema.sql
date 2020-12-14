@@ -13,11 +13,11 @@ CREATE TABLE `content_type` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `class_icon` varchar(100) NOT NULL,
+  `width_icon` varchar(100) NOT NULL,
+  `height_icon` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*INSERT INTO `content_type` VALUES (1,'Текст','post-text'),(2,'Цитата','post-quote'),(3,'Картинка','post-photo'),(4,'Видео','post-video'),(5,'Ссылка','post-link');
-*/
 CREATE TABLE `post` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `create_time` datetime NOT NULL,
