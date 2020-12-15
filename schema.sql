@@ -10,15 +10,6 @@ CREATE TABLE `user` (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
 CREATE TABLE `content_type` (
-  `id`         int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name`       varchar(100) NOT NULL,
-  `class_icon` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8;
-
-INSERT INTO `content_type` VALUES (1, 'Текст', 'text'),(2, 'Цитата', 'quote'),(3, 'Картинка', 'photo'),(4, 'Видео', 'video'),(5, 'Ссылка', 'link');
-
-CREATE TABLE `content_type` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `class_icon` varchar(100) NOT NULL,

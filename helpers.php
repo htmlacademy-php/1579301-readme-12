@@ -348,11 +348,16 @@ function dbConnect(array $dbParams) : mysqli
 /**
  * Возвращает посты пользователя
  * @param mysqli $connect
+ * @param int $contentTypeId
  * @return array
  */
-function getPosts(mysqli $connect) : array
+function getPosts(mysqli $connect, int $contentTypeId) : array
 {
-    $sqlPost = 'SELECT post.content, post.picture, post.link, post.header, post.create_time, user.login, user.avatar, content_type.class_icon FROM `post` LEFT JOIN `user` ON post.user_id = user.id LEFT JOIN `content_type` ON post.content_type_id = content_type.id order by `count_views` LIMIT 6';
+    $sqlPost = 'SELECT post.id, post.content, post.content_type_id, post.picture, post.link, post.header, post.create_time, user.login, user.avatar, content_type.class_icon FROM `post` LEFT JOIN `user` ON post.user_id = user.id LEFT JOIN `content_type` ON post.content_type_id = content_type.id';
+    if (isset($contentTypeId) && !empty($contentTypeId)) {
+        $sqlPost .= ' WHERE `content_type_id` = '.$contentTypeId.'';
+    }
+    $sqlPost .= ' order by `count_views` LIMIT 6';
     $resultPost = mysqli_query($connect, $sqlPost);
     return mysqli_fetch_all($resultPost, MYSQLI_ASSOC);
 }
@@ -364,7 +369,7 @@ function getPosts(mysqli $connect) : array
  */
 function getContentType(mysqli $connect) : array
 {
-    $sqlPost = 'SELECT `class_icon`, `width_icon`, `height_icon` FROM `content_type`';
+    $sqlPost = 'SELECT `id`, `class_icon`, `width_icon`, `height_icon` FROM `content_type`';
     $resultPost = mysqli_query($connect, $sqlPost);
     return mysqli_fetch_all($resultPost, MYSQLI_ASSOC);
 }
