@@ -6,9 +6,9 @@ $config = require 'config.php';
 
 $connect = dbConnect($config['db']);
 
-$getContentTypeId = $_GET['id'] ?? '';
+$id = getIdFromParams($_GET);
 
-$posts = getPosts($connect, (int) $getContentTypeId);
+$posts = getPosts($connect, $id);
 
 $contentType = getContentType($connect);
 
@@ -18,7 +18,7 @@ $user_name = 'Dima'; // укажите здесь ваше имя
 
 $title = 'readme';
 
-$mainContent = include_template('main.php', ['posts' => $posts, 'contentType' => $contentType, 'getId' =>$getContentTypeId]);
+$mainContent = include_template('main.php', ['posts' => $posts, 'contentType' => $contentType, 'id' => $id]);
 
 $layoutContent = include_template('layout.php', ['mainContent' => $mainContent, 'title' => $title, 'is_auth' => $is_auth, 'user_name' => $user_name]);
 

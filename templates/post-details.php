@@ -1,13 +1,38 @@
 <main class="page__main page__main--publication">
   <div class="container">
-    <h1 class="page__title page__title--publication">Наконец, обработала фотки!</h1>
+    <h1 class="page__title page__title--publication">
+        <?php foreach ($posts as $post) :
+
+        if ($post['id'] == $id) {
+            echo $post['header'];
+        }
+
+         endforeach; ?>
+
+        <!--Наконец, обработала фотки!-->
+    </h1>
     <section class="post-details">
       <h2 class="visually-hidden">Публикация</h2>
-      <div class="post-details__wrapper post-photo">
+      <div class="post-details__wrapper
+          <?php foreach ($posts as $post) :
+
+          if ($post['id'] == $id) {
+              echo $post['class_icon'];
+          }
+
+          endforeach; ?>
+      ">
         <div class="post-details__main-block post post--details">
+            <?= $postContent ?>
+            <!--<div class="post__main">
+                <h2><a href="#">Наконец, обработала фотки!</a></h2>
+                <div class="post-photo__image-wrapper">
+                    <img src="img/rock.jpg" alt="Фото от пользователя" width="760" height="507">
+                </div>
+            </div>
           <div class="post-details__image-wrapper post-photo__image-wrapper">
             <img src="img/rock-default.jpg" alt="Фото от пользователя" width="760" height="507">
-          </div>
+          </div>-->
           <div class="post__indicators">
             <div class="post__buttons">
               <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
