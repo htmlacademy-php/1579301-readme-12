@@ -32,6 +32,8 @@ CREATE TABLE `post` (
   `user_id` int UNSIGNED NOT NULL,
   `is_repost` tinyint(1) DEFAULT 0,
   `original_user_id` int UNSIGNED NULL,
+  `comments_count` int UNSIGNED DEFAULT 0,
+  `likes_count` int UNSIGNED DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `post_content_type_id_idx` (`content_type_id`),
   KEY `post_user_id_idx` (`user_id`),
