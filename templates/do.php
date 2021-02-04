@@ -8,11 +8,13 @@ $config = require $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 
 $connect = dbConnect($config['db']);
 
-$id = $_GET['postid'];
+$id = getIdFromParams($_GET);
 
 switch($_GET['action']) {
     case 'like':
         updateLikesCount($connect, $id);
-        header('Location: http://1579301-readme-12/post.php?id='.$id);
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
         break;
 }
+
+/*http://1579301-readme-12/post.php?id='.$id*/

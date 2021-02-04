@@ -7,7 +7,7 @@
                 <b class="popular__sorting-caption sorting__caption">Сортировка:</b>
                 <ul class="popular__sorting-list sorting__list">
                     <li class="sorting__item sorting__item--popular">
-                        <a class="sorting__link sorting__link--active" href="#">
+                        <a class="sorting__link <?= ($sort['sort'] == 'popularity') ? 'sorting__link--active' : ''?>" href="/?sort=popularity&order=<?= $order ?><?= ($id ? '&id='.$id : '') ?>">
                             <span>Популярность</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -15,7 +15,7 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="sorting__link" href="#">
+                        <a class="sorting__link <?= ($sort['sort'] == 'like') ? 'sorting__link--active' : ''?>" href="/?sort=like&order=<?= $order ?><?= ($id ? '&id='.$id : '') ?>">
                             <span>Лайки</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -23,7 +23,7 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="sorting__link" href="#">
+                        <a class="sorting__link <?= ($sort['sort'] == 'date') ? 'sorting__link--active' : ''?>" href="/?sort=date&order=<?= $order ?><?= ($id ? '&id='.$id : '') ?>">
                             <span>Дата</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -138,21 +138,21 @@
                     </div>
                     <div class="post__indicators">
                         <div class="post__buttons">
-                            <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+                            <a class="post__indicator post__indicator--likes button" href="/templates/do.php?action=like&id=<?= $post['id'] ?>" title="Лайк">
                                 <svg class="post__indicator-icon" width="20" height="17">
                                     <use xlink:href="#icon-heart"></use>
                                 </svg>
                                 <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                     <use xlink:href="#icon-heart-active"></use>
                                 </svg>
-                                <span>0</span>
+                                <span><?= $post['likes_count'] ?></span>
                                 <span class="visually-hidden">количество лайков</span>
                             </a>
                             <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
                                 <svg class="post__indicator-icon" width="19" height="17">
                                     <use xlink:href="#icon-comment"></use>
                                 </svg>
-                                <span>0</span>
+                                <span><?= $post['comments_count'] ?></span>
                                 <span class="visually-hidden">количество комментариев</span>
                             </a>
                         </div>
@@ -160,5 +160,9 @@
                 </footer>
             </article>
             <?php endforeach; ?>
+        </div>
+        <div class="popular__page-links">
+            <a class="popular__page-link popular__page-link--prev button button--gray" href="?page=<?= $currentPage - 1 ?>">Предыдущая страница</a>
+            <a class="popular__page-link popular__page-link--next button button--gray" href="?page=<?= $currentPage + 1 ?>">Следующая страница</a>
         </div>
     </div>

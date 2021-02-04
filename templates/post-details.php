@@ -10,18 +10,9 @@
       ">
         <div class="post-details__main-block post post--details">
             <?= $postContent ?>
-            <!--<div class="post__main">
-                <h2><a href="#">Наконец, обработала фотки!</a></h2>
-                <div class="post-photo__image-wrapper">
-                    <img src="img/rock.jpg" alt="Фото от пользователя" width="760" height="507">
-                </div>
-            </div>
-          <div class="post-details__image-wrapper post-photo__image-wrapper">
-            <img src="img/rock-default.jpg" alt="Фото от пользователя" width="760" height="507">
-          </div>-->
           <div class="post__indicators">
             <div class="post__buttons">
-              <a class="post__indicator post__indicator--likes button" href="/templates/do.php?action=like&postid=<?= $post['id'] ?>" title="Лайк">
+              <a class="post__indicator post__indicator--likes button" href="/templates/do.php?action=like&id=<?= $post['id'] ?>" title="Лайк">
                 <svg class="post__indicator-icon" width="20" height="17">
                   <use xlink:href="#icon-heart"></use>
                 </svg>

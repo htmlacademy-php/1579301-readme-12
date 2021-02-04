@@ -12,6 +12,8 @@ $contentType = getContentType($connect);
 
 $id = getIdFromParams($_GET);
 
+$isPostIsset = isPostIsset($connect, $id);
+
 updateViewsCount($connect, $id);
 
 $post = getPost($connect, $id);
