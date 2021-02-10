@@ -76,45 +76,59 @@ function db_get_prepare_stmt($link, $sql, $data = [])
 /**
  * Возвращает посты пользователя
  * @param mysqli $connect
- * @param int $contentTypeId
+ * @param array|null $criteria
  * @return array
  */
-function getPosts(mysqli $connect, ?int $contentTypeId, ?array $data, $order, $start) : array
+function getPosts(mysqli $connect, ?array $criteria) : array
 {
     $sqlPost = 'SELECT post.id, post.content, post.content_type_id, post.picture, post.link, post.header, post.create_time, post.comments_count, post.likes_count, user.login, user.avatar, content_type.class_icon 
                 FROM `post` LEFT JOIN `user` ON post.user_id = user.id 
                 LEFT JOIN `content_type` ON post.content_type_id = content_type.id';
-    if ($contentTypeId) {
-        $sqlPost .= ' WHERE `content_type_id` = ' . $contentTypeId . '';
+    if ($criteria['contentTypeId']) {
+        $sqlPost .= ' WHERE `content_type_id` = ' . $criteria['contentTypeId'] . '';
     }
 
     $sort = 'count_views';
 
-    if (isset($data['sort']) && $data['sort'] == 'popularity') {
+    if (isset($criteria['sort']) && $criteria['sort']['type'] == 'popularity') {
         $sort = 'count_views';
-    } elseif (isset($data['sort']) && $data['sort'] == 'like') {
+    } elseif (isset($criteria['sort']) && $criteria['sort']['type'] == 'like') {
         $sort = 'likes_count';
-    } elseif (isset($data['sort']) && $data['sort'] == 'date') {
+    } elseif (isset($criteria['sort']) && $criteria['sort']['type'] == 'date') {
         $sort = 'create_time';
     }
 
-    $sqlPost .= ' ORDER BY ' .$sort . ' ' . $order . ' LIMIT ' . $start . ', 6';
+    $sqlPost .= ' ORDER BY ' .$sort . ' ' . $criteria['sort']['order'] . ' LIMIT ' . $criteria['pagination']['startItem'] . ', 6';
 
     $resultPost = mysqli_query($connect, $sqlPost);
 
     if ($resultPost) {
         return mysqli_fetch_all($resultPost, MYSQLI_ASSOC) ?? [];
-    } else {
+    }
         echo "Ошибка" . mysqli_error($connect);
         exit();
-    }
 }
 
-function getCountPosts(mysqli $connect)
+/**
+ * Считает количество постов, учитывая их тип
+ * @param mysqli $connect
+ * @param string|null $type
+ * @return int
+ */
+function getCountPosts(mysqli $connect, ?string $type): int
 {
-    $sql = "SELECT post.id FROM `post`";
+    $sql = 'SELECT COUNT(*) as count FROM `post`';
+
+    if ($type) {
+        $sql .=  'WHERE post.content_type_id = '. $type . '';
+    }
     $result = mysqli_query($connect, $sql);
-    return mysqli_num_rows($result);
+
+    if ($result) {
+        return mysqli_fetch_assoc($result)['count'] ?? [];
+    }
+    echo "Ошибка" . mysqli_error($connect);
+    exit();
 }
 
 /**
@@ -123,7 +137,7 @@ function getCountPosts(mysqli $connect)
  * @param int|null $postId
  * @return array
  */
-function getPost(mysqli $connect, ?int $postId): array
+function getPost(mysqli $connect, int $postId): array
 {
     $sqlPost = 'SELECT post.id, post.content, post.content_type_id, post.picture, post.link, post.quote_author, post.header, post.create_time, post.user_id, post.comments_count, post.likes_count, post.count_views, user.login, user.create_time as createUser ,user.avatar, content_type.class_icon FROM `post` LEFT JOIN `user` ON post.user_id = user.id LEFT JOIN `content_type` ON post.content_type_id = content_type.id WHERE post.id = ' . $postId . '';
     $resultPost = mysqli_query($connect, $sqlPost);
@@ -141,7 +155,7 @@ function getPost(mysqli $connect, ?int $postId): array
  * @param mysqli $connect
  * @return array
  */
-function getContentType(mysqli $connect) : array
+function getContentTypes(mysqli $connect) : array
 {
     $sqlPost = 'SELECT `id`, `class_icon`, `width_icon`, `height_icon` FROM `content_type`';
     $resultPost = mysqli_query($connect, $sqlPost);
@@ -158,7 +172,7 @@ function getCommentData(mysqli $connect, int $postId): array
 {
     $sqlPost = 'SELECT comment.create_time, comment.content, user.login, user.avatar FROM `comment` LEFT JOIN `user` ON comment.author_id = user.id WHERE comment.post_id = ' . $postId . ' ORDER BY comment.create_time DESC';
     $resultPost = mysqli_query($connect, $sqlPost);
-    return mysqli_fetch_all($resultPost, MYSQLI_ASSOC);
+    return mysqli_fetch_all($resultPost, MYSQLI_ASSOC) ?? [];
 }
 
 /**
@@ -173,13 +187,11 @@ function addComment($connect, int $postId, int $postCreatorId, array $data)
 {
     date_default_timezone_set( 'Europe/Moscow' );
     $date = date("Y-m-d H:i:s");
+
     $msg = trim($data['msg']);
-    if (mb_strlen($msg) >= 4) {
-        $sql = "INSERT INTO comment (create_time, content, post_creator_id, post_id, author_id) VALUES ('$date', ?, '$postCreatorId', '$postId', 1)";
-    } else {
-        echo "Не менее 4х символов";
-        return false;
-    }
+
+    $sql = "INSERT INTO comment (create_time, content, post_creator_id, post_id, author_id) VALUES ('$date', ?, '$postCreatorId', '$postId', 1)";
+
     $stmt = mysqli_prepare($connect, $sql);
     mysqli_stmt_bind_param($stmt, 's', $msg);
     $result = mysqli_stmt_execute($stmt);
@@ -198,11 +210,7 @@ function addComment($connect, int $postId, int $postCreatorId, array $data)
  */
 function updateCommentsCount($connect, int $postId)
 {
-    $sql = "SELECT COUNT(*) as count FROM comment WHERE `post_id` = '$postId'";
-    $result = mysqli_query($connect, $sql);
-    $currentCount = mysqli_fetch_assoc($result)['count'];
-
-    $sql = "UPDATE post SET comments_count = '$currentCount' WHERE post.id = '$postId'";
+    $sql = "UPDATE post SET comments_count = comments_count + 1 WHERE post.id = '$postId'";
     mysqli_query($connect, $sql);
 }
 

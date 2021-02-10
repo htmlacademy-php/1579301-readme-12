@@ -1,3 +1,8 @@
+<?php
+var_export($criteria);
+
+?>
+
 <div class="container">
         <h1 class="page__title page__title--popular">Популярное</h1>
     </div>
@@ -7,7 +12,7 @@
                 <b class="popular__sorting-caption sorting__caption">Сортировка:</b>
                 <ul class="popular__sorting-list sorting__list">
                     <li class="sorting__item sorting__item--popular">
-                        <a class="sorting__link <?= ($sort['sort'] == 'popularity') ? 'sorting__link--active' : ''?>" href="/?sort=popularity&order=<?= $order ?><?= ($id ? '&id='.$id : '') ?>">
+                        <a class="sorting__link <?= ($criteria['sort']['type'] == 'popularity') ? 'sorting__link--active' : ''?>" href="/?sort=popularity&order=<?= $criteria['sort']['order'] ?><?= ($criteria['contentTypeId'] ? '&id='.$criteria['contentTypeId'] : '') ?>">
                             <span>Популярность</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -15,7 +20,7 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="sorting__link <?= ($sort['sort'] == 'like') ? 'sorting__link--active' : ''?>" href="/?sort=like&order=<?= $order ?><?= ($id ? '&id='.$id : '') ?>">
+                        <a class="sorting__link <?= ($criteria['sort']['type'] == 'like') ? 'sorting__link--active' : ''?>" href="/?sort=like&order=<?= $criteria['sort']['order'] ?><?= ($criteria['contentTypeId'] ? '&id='.$criteria['contentTypeId'] : '') ?>">
                             <span>Лайки</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -23,7 +28,7 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="sorting__link <?= ($sort['sort'] == 'date') ? 'sorting__link--active' : ''?>" href="/?sort=date&order=<?= $order ?><?= ($id ? '&id='.$id : '') ?>">
+                        <a class="sorting__link <?= ($criteria['sort']['type'] == 'date') ? 'sorting__link--active' : ''?>" href="/?sort=date&order=<?= $criteria['sort']['order'] ?><?= ($criteria['contentTypeId'] ? '&id='.$criteria['contentTypeId'] : '') ?>">
                             <span>Дата</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -36,42 +41,42 @@
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
                 <ul class="popular__filters-list filters__list">
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                        <a class="filters__button filters__button--ellipse filters__button--all <?= empty($id) ? 'filters__button--active' : ''?>" href="/">
+                        <a class="filters__button filters__button--ellipse filters__button--all <?= empty($criteria['contentTypeId']) ? 'filters__button--active' : ''?>" href="/">
                             <span>Все</span>
                         </a>
                     </li>
                     <?php foreach ($contentType as $type) : ?>
                     <li class="popular__filters-item filters__item">
                         <?php if ($type['class_icon'] === 'post-photo') : ?>
-                        <a class="filters__button filters__button--photo button <?= ($type['id'] == $id) ? 'filters__button--active' : '' ?>" href="<?= '/?id=' . $type['id'] ?>">
+                        <a class="filters__button filters__button--photo button <?= ($type['id'] == $criteria['contentTypeId']) ? 'filters__button--active' : '' ?>" href="<?= '/?id=' . $type['id'] ?>">
                             <span class="visually-hidden">Фото</span>
                             <svg class="filters__icon" width="<?= $type['width_icon'] ?>" height="<?= $type['height_icon'] ?>">
                                 <use xlink:href="#icon-filter-photo"></use>
                             </svg>
                         </a>
                         <?php elseif ($type['class_icon'] === 'post-video') : ?>
-                            <a class="filters__button filters__button--video button <?= ($type['id'] == $id) ? 'filters__button--active' : '' ?>" href="<?= '/?id=' . $type['id'] ?>">
+                            <a class="filters__button filters__button--video button <?= ($type['id'] == $criteria['contentTypeId']) ? 'filters__button--active' : '' ?>" href="<?= '/?id=' . $type['id'] ?>">
                                 <span class="visually-hidden">Видео</span>
                                 <svg class="filters__icon" width="<?= $type['width_icon'] ?>" height="<?= $type['height_icon'] ?>">
                                     <use xlink:href="#icon-filter-video"></use>
                                 </svg>
                             </a>
                         <?php elseif ($type['class_icon'] === 'post-text') : ?>
-                            <a class="filters__button filters__button--text button <?= ($type['id'] == $id) ? 'filters__button--active' : '' ?>" href="<?= '/?id=' . $type['id'] ?>">
+                            <a class="filters__button filters__button--text button <?= ($type['id'] == $criteria['contentTypeId']) ? 'filters__button--active' : '' ?>" href="<?= '/?id=' . $type['id'] ?>">
                                 <span class="visually-hidden">Текст</span>
                                 <svg class="filters__icon" width="<?= $type['width_icon'] ?>" height="<?= $type['height_icon'] ?>">
                                     <use xlink:href="#icon-filter-text"></use>
                                 </svg>
                             </a>
                         <?php elseif ($type['class_icon'] === 'post-quote') : ?>
-                            <a class="filters__button filters__button--quote button <?= ($type['id'] == $id) ? 'filters__button--active' : '' ?>" href="<?= '/?id=' . $type['id'] ?>">
+                            <a class="filters__button filters__button--quote button <?= ($type['id'] == $criteria['contentTypeId']) ? 'filters__button--active' : '' ?>" href="<?= '/?id=' . $type['id'] ?>">
                                 <span class="visually-hidden">Цитата</span>
                                  <svg class="filters__icon" width="<?= $type['width_icon'] ?>" height="<?= $type['height_icon'] ?>">
                                      <use xlink:href="#icon-filter-quote"></use>
                                  </svg>
                             </a>
                         <?php elseif ($type['class_icon'] === 'post-link') : ?>
-                            <a class="filters__button filters__button--link button <?= ($type['id'] == $id) ? 'filters__button--active' : '' ?>" href="<?= '/?id=' . $type['id'] ?>">
+                            <a class="filters__button filters__button--link button <?= ($type['id'] == $criteria['contentTypeId']) ? 'filters__button--active' : '' ?>" href="<?= '/?id=' . $type['id'] ?>">
                                 <span class="visually-hidden">Ссылка</span>
                                 <svg class="filters__icon" width="<?= $type['width_icon'] ?>" height="<?= $type['height_icon'] ?>">
                                     <use xlink:href="#icon-filter-link"></use>
@@ -162,7 +167,15 @@
             <?php endforeach; ?>
         </div>
         <div class="popular__page-links">
-            <a class="popular__page-link popular__page-link--prev button button--gray" href="?page=<?= $currentPage - 1 ?>">Предыдущая страница</a>
-            <a class="popular__page-link popular__page-link--next button button--gray" href="?page=<?= $currentPage + 1 ?>">Следующая страница</a>
+            <?php if ($criteria['pagination']['totalPosts'] > 6 && ($criteria['pagination']['currentPage'] > 1) && ($criteria['pagination']['currentPage'] != ($criteria['pagination']['totalPages']))) : ?>
+                <a class="popular__page-link popular__page-link--prev button button--gray" href="?page=<?= $criteria['pagination']['currentPage'] - 1 ?><?=($criteria['contentTypeId'] ? '&id='.$criteria['contentTypeId'] : '')?>">Предыдущая страница</a>
+                <a class="popular__page-link popular__page-link--next button button--gray" href="?page=<?= $criteria['pagination']['currentPage'] + 1 ?><?=($criteria['contentTypeId'] ? '&id='.$criteria['contentTypeId'] : '')?>">Следующая страница</a>
+            <?php elseif (($criteria['pagination']['totalPosts'] > 6) && ($criteria['pagination']['currentPage'] == 1)) :?>
+                <a class="" href="?page=<?= $criteria['pagination']['currentPage'] - 1 ?><?=($criteria['contentTypeId'] ? '&id='.$criteria['contentTypeId'] : '')?>"></a>
+                <a class="popular__page-link popular__page-link--next button button--gray" href="?page=<?= $criteria['pagination']['currentPage'] + 1 ?><?=($criteria['contentTypeId'] ? '&id='.$criteria['contentTypeId'] : '')?>">Следующая страница</a>
+            <?php elseif ($criteria['pagination']['totalPosts'] > 6 && $criteria['pagination']['currentPage'] == $criteria['pagination']['totalPages']) : ?>
+                <a class="popular__page-link popular__page-link--prev button button--gray" href="?page=<?= $criteria['pagination']['currentPage'] - 1 ?><?=($criteria['contentTypeId'] ? '&id='.$criteria['contentTypeId'] : '')?>">Предыдущая страница</a>
+                <a class="" href="?page=<?= $criteria['pagination']['currentPage'] + 1 ?><?=($criteria['contentTypeId'] ? '&id='.$criteria['contentTypeId'] : '')?>"></a>
+            <?php endif ?>
         </div>
     </div>

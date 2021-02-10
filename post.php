@@ -8,7 +8,7 @@ $config = require 'config.php';
 
 $connect = dbConnect($config['db']);
 
-$contentType = getContentType($connect);
+$contentType = getContentTypes($connect);
 
 $id = getIdFromParams($_GET);
 
@@ -23,8 +23,11 @@ $postCreatorId = $post['user_id'];
 $validMsg = true;
 
 if (!empty($_POST)) {
-    $validMsg = validateComment($_POST);
-    addComment($connect, $id, $postCreatorId, $_POST);
+    if (validateComment($_POST)) {
+        addComment($connect, $id, $postCreatorId, $_POST);
+    } else {
+        $validMsg = validateComment($_POST);
+    }
 }
 
 $commentData = getCommentData($connect, $id);
