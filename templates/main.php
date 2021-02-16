@@ -1,8 +1,3 @@
-<?php
-var_export($criteria);
-
-?>
-
 <div class="container">
         <h1 class="page__title page__title--popular">Популярное</h1>
     </div>
@@ -12,7 +7,7 @@ var_export($criteria);
                 <b class="popular__sorting-caption sorting__caption">Сортировка:</b>
                 <ul class="popular__sorting-list sorting__list">
                     <li class="sorting__item sorting__item--popular">
-                        <a class="sorting__link <?= ($criteria['sort']['type'] == 'popularity') ? 'sorting__link--active' : ''?>" href="/?sort=popularity&order=<?= $criteria['sort']['order'] ?><?= ($criteria['contentTypeId'] ? '&id='.$criteria['contentTypeId'] : '') ?>">
+                        <a class="sorting__link <?= ($criteria['sort']['type'] == 'popularity') ? ' sorting__link--active ' : ''?><?= ($criteria['sort']['order'] == 'asc') ? 'sorting__link--reverse' : '' ?>" href="/?sort=popularity&order=<?= $criteria['sort']['order'] ?><?= ($criteria['contentTypeId'] ? '&id='.$criteria['contentTypeId'] : '') ?>">
                             <span>Популярность</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -20,7 +15,7 @@ var_export($criteria);
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="sorting__link <?= ($criteria['sort']['type'] == 'like') ? 'sorting__link--active' : ''?>" href="/?sort=like&order=<?= $criteria['sort']['order'] ?><?= ($criteria['contentTypeId'] ? '&id='.$criteria['contentTypeId'] : '') ?>">
+                        <a class="sorting__link <?= ($criteria['sort']['type'] == 'like') ? ' sorting__link--active ' : ''?><?= ($criteria['sort']['order'] == 'asc') ? 'sorting__link--reverse' : '' ?>" href="/?sort=like&order=<?= $criteria['sort']['order'] ?><?= ($criteria['contentTypeId'] ? '&id='.$criteria['contentTypeId'] : '') ?>">
                             <span>Лайки</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -28,7 +23,7 @@ var_export($criteria);
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="sorting__link <?= ($criteria['sort']['type'] == 'date') ? 'sorting__link--active' : ''?>" href="/?sort=date&order=<?= $criteria['sort']['order'] ?><?= ($criteria['contentTypeId'] ? '&id='.$criteria['contentTypeId'] : '') ?>">
+                        <a class="sorting__link <?= ($criteria['sort']['type'] == 'date') ? ' sorting__link--active ' : ''?><?= ($criteria['sort']['order'] == 'asc') ? 'sorting__link--reverse' : '' ?>" href="/?sort=date&order=<?= $criteria['sort']['order'] ?><?= ($criteria['contentTypeId'] ? '&id='.$criteria['contentTypeId'] : '') ?>">
                             <span>Дата</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>

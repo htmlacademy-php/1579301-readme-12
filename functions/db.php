@@ -25,7 +25,7 @@ function dbConnect(array $dbParams) : mysqli
  *
  * @return mysqli_stmt Подготовленное выражение
  */
-function db_get_prepare_stmt($link, $sql, $data = [])
+function db_get_prepare_stmt(mysqli $link, string $sql, array $data = [])
 {
     $stmt = mysqli_prepare($link, $sql);
 
@@ -90,15 +90,21 @@ function getPosts(mysqli $connect, ?array $criteria) : array
 
     $sort = 'count_views';
 
-    if (isset($criteria['sort']) && $criteria['sort']['type'] == 'popularity') {
-        $sort = 'count_views';
-    } elseif (isset($criteria['sort']) && $criteria['sort']['type'] == 'like') {
-        $sort = 'likes_count';
-    } elseif (isset($criteria['sort']) && $criteria['sort']['type'] == 'date') {
-        $sort = 'create_time';
+    if (isset($criteria['sort'])) {
+        switch ($criteria['sort']['type']) {
+            case 'popularity':
+                $sort = 'count_views';
+                break;
+            case 'like':
+                $sort = 'likes_count';
+                break;
+            case 'date':
+                $sort = 'create_time';
+                break;
+        }
     }
 
-    $sqlPost .= ' ORDER BY ' .$sort . ' ' . $criteria['sort']['order'] . ' LIMIT ' . $criteria['pagination']['startItem'] . ', 6';
+    $sqlPost .= ' ORDER BY ' .$sort . ' ' . $criteria['sort']['order'] . ' LIMIT ' . $criteria['pagination']['startItem'] . ', ' . $criteria['pagination']['postsOnPage'] .'';
 
     $resultPost = mysqli_query($connect, $sqlPost);
 
@@ -125,7 +131,7 @@ function getCountPosts(mysqli $connect, ?string $type): int
     $result = mysqli_query($connect, $sql);
 
     if ($result) {
-        return mysqli_fetch_assoc($result)['count'] ?? [];
+        return mysqli_fetch_assoc($result)['count'];
     }
     echo "Ошибка" . mysqli_error($connect);
     exit();
@@ -159,7 +165,12 @@ function getContentTypes(mysqli $connect) : array
 {
     $sqlPost = 'SELECT `id`, `class_icon`, `width_icon`, `height_icon` FROM `content_type`';
     $resultPost = mysqli_query($connect, $sqlPost);
-    return mysqli_fetch_all($resultPost, MYSQLI_ASSOC);
+    if ($resultPost) {
+        return mysqli_fetch_all($resultPost, MYSQLI_ASSOC);
+    } else {
+        echo 'Ошибка' . mysqli_error($connect);
+        exit();
+    }
 }
 
 /**
@@ -168,11 +179,15 @@ function getContentTypes(mysqli $connect) : array
  * @param int $postId - id текущего поста
  * @return array
  */
-function getCommentData(mysqli $connect, int $postId): array
+function getComments(mysqli $connect, int $postId): array
 {
     $sqlPost = 'SELECT comment.create_time, comment.content, user.login, user.avatar FROM `comment` LEFT JOIN `user` ON comment.author_id = user.id WHERE comment.post_id = ' . $postId . ' ORDER BY comment.create_time DESC';
     $resultPost = mysqli_query($connect, $sqlPost);
-    return mysqli_fetch_all($resultPost, MYSQLI_ASSOC) ?? [];
+    if ($resultPost) {
+        return mysqli_fetch_all($resultPost, MYSQLI_ASSOC) ?? [];
+    } else {
+        echo 'Ошибка' . mysqli_error($connect);
+    }
 }
 
 /**
@@ -211,7 +226,12 @@ function addComment($connect, int $postId, int $postCreatorId, array $data)
 function updateCommentsCount($connect, int $postId)
 {
     $sql = "UPDATE post SET comments_count = comments_count + 1 WHERE post.id = '$postId'";
-    mysqli_query($connect, $sql);
+    $query = mysqli_query($connect, $sql);
+
+    if (!$query) {
+        echo 'Ошибка' . mysqli_error($connect);
+        exit();
+    }
 }
 
 /**
@@ -252,7 +272,11 @@ function countPosts(mysqli $connect, ?int $postId): array
 function updateLikesCount(mysqli $connect, ?int $postId)
 {
     $sql = 'UPDATE post SET likes_count = likes_count + 1 WHERE post.id = ' . $postId . '';
-    mysqli_query($connect, $sql);
+    $query = mysqli_query($connect, $sql);
+
+    if (!$query) {
+        echo 'Ошибка' . mysqli_error($connect);
+    }
 }
 
 /**
@@ -263,7 +287,11 @@ function updateLikesCount(mysqli $connect, ?int $postId)
 function updateViewsCount(mysqli $connect, ?int $postId)
 {
     $sql = 'UPDATE post SET count_views = count_views + 1 WHERE post.id = ' . $postId . '';
-    mysqli_query($connect, $sql);
+    $query = mysqli_query($connect, $sql);
+
+    if (!$query) {
+        echo 'Ошибка' . mysqli_error($connect);
+    }
 }
 
 function isPostIsset(mysqli $connect, ?int $postId)

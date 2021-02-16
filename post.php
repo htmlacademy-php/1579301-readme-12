@@ -30,7 +30,7 @@ if (!empty($_POST)) {
     }
 }
 
-$commentData = getCommentData($connect, $id);
+$comments = getComments($connect, $id);
 
 $countSubscribers = countSubscribers($connect, $id);
 
@@ -60,7 +60,7 @@ switch ($post['class_icon']) {
         break;
 }
 
-$postLayout = include_template('post-details.php', ['postContent' => $postContent, 'post' => $post, 'commentData' => $commentData, 'validMsg' => $validMsg, 'countSubscribers' => $countSubscribers, 'countPosts' => $countPosts]);
+$postLayout = include_template('post-details.php', ['postContent' => $postContent, 'post' => $post, 'comments' => $comments, 'validMsg' => $validMsg, 'countSubscribers' => $countSubscribers, 'countPosts' => $countPosts]);
 
 $layoutContent = include_template('layout.php', ['mainContent' => $postLayout, 'title' => $title, 'is_auth' => $is_auth, 'user_name' => $user_name]);
 

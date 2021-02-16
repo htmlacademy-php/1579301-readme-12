@@ -18,10 +18,10 @@ $order = (($sort['order'] == 'asc') ? 'desc' : 'asc');
 
 $totalPosts = getCountPosts($connect, $id);
 
-$productsOnPage = 6; // Желаемое количество товаров на странице
+/*$productsOnPage = 6; // Желаемое количество товаров на странице*/
 $currentPage = $_GET['page'] ?? 1; // Извлекаем из URL текущую страницу
-$totalPages = ceil($totalPosts / $productsOnPage); // Общее число страниц
-$start = $currentPage * $productsOnPage - $productsOnPage; // Вычисляем с какого номера необходимо выводить сообщение
+$totalPages = ceil($totalPosts / $config['pagination']['postsOnPage']); // Общее число страниц
+$start = $currentPage * $config['pagination']['postsOnPage'] - $config['pagination']['postsOnPage']; // Вычисляем с какого номера необходимо выводить сообщение
 
 $criteria = [
     'contentTypeId' => $id,
@@ -30,7 +30,7 @@ $criteria = [
         'order' => $order
     ],
     'pagination' => [
-        'perPage' => 6,
+        'postsOnPage' => $config['pagination']['postsOnPage'],
         'currentPage' => $currentPage,
         'startItem' => $start,
         'totalPosts' => $totalPosts,
@@ -39,8 +39,6 @@ $criteria = [
 ];
 
 $posts = getPosts($connect, $criteria);
-
-var_export($totalPosts);
 
 $contentType = getContentTypes($connect);
 

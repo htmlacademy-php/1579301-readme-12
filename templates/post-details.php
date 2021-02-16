@@ -57,7 +57,7 @@
             </form>
             <div class="comments__list-wrapper">
               <ul class="comments__list">
-                  <?php foreach ($commentData as $comment) : ?>
+                  <?php foreach ($comments as $comment) : ?>
                 <li class="comments__item user">
                   <div class="comments__avatar">
                     <a class="user__avatar-link" href="#">
