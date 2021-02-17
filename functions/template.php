@@ -23,63 +23,6 @@ function is_date_valid(string $date): bool
 }
 
 /**
- * Создает подготовленное выражение на основе готового SQL запроса и переданных данных
- *
- * @param $link mysqli Ресурс соединения
- * @param $sql string SQL запрос с плейсхолдерами вместо значений
- * @param array $data Данные для вставки на место плейсхолдеров
- *
- * @return mysqli_stmt Подготовленное выражение
- */
-function db_get_prepare_stmt($link, $sql, $data = [])
-{
-    $stmt = mysqli_prepare($link, $sql);
-
-    if ($stmt === false) {
-        $errorMsg = 'Не удалось инициализировать подготовленное выражение: ' . mysqli_error($link);
-        die($errorMsg);
-    }
-
-    if ($data) {
-        $types = '';
-        $stmt_data = [];
-
-        foreach ($data as $value) {
-            $type = 's';
-
-            if (is_int($value)) {
-                $type = 'i';
-            } else {
-                if (is_string($value)) {
-                    $type = 's';
-                } else {
-                    if (is_double($value)) {
-                        $type = 'd';
-                    }
-                }
-            }
-
-            if ($type) {
-                $types .= $type;
-                $stmt_data[] = $value;
-            }
-        }
-
-        $values = array_merge([$stmt, $types], $stmt_data);
-
-        $func = 'mysqli_stmt_bind_param';
-        $func(...$values);
-
-        if (mysqli_errno($link) > 0) {
-            $errorMsg = 'Не удалось связать подготовленное выражение с параметрами: ' . mysqli_error($link);
-            die($errorMsg);
-        }
-    }
-
-    return $stmt;
-}
-
-/**
  * Возвращает корректную форму множественного числа
  * Ограничения: только для целых чисел
  *
@@ -304,6 +247,7 @@ define('FIVE_WEEKS', 50400);
  */
 function timePassedAfterPublication(string $postTime) : string
 {
+    date_default_timezone_set( 'Europe/Moscow' );
     $currentTime = time();
 
     if ($currentTime > strtotime($postTime)) {
@@ -312,13 +256,13 @@ function timePassedAfterPublication(string $postTime) : string
         $relativeTimeMin = $relativeTimeSec / 60;
 
         if ($relativeTimeMin < HOUR) {
-            return $relativeTimeMin . get_noun_plural_form($relativeTimeMin, ' минута', ' минуты', ' минут') . ' назад';
+            return ceil($relativeTimeMin) . get_noun_plural_form(ceil($relativeTimeMin), ' минута', ' минуты', ' минут') . ' назад';
         }
         if (HOUR <= $relativeTimeMin && $relativeTimeMin < DAY) {
-            return $relativeTimeMin / HOUR . get_noun_plural_form($relativeTimeMin / HOUR, ' час', ' часа', ' часов') . ' назад';
+            return ceil($relativeTimeMin / HOUR) . get_noun_plural_form(ceil($relativeTimeMin / HOUR), ' час', ' часа', ' часов') . ' назад';
         }
         if (DAY <= $relativeTimeMin && $relativeTimeMin < WEEK) {
-            return $relativeTimeMin / DAY . get_noun_plural_form($relativeTimeMin / DAY, ' день', ' дня', ' дней') . ' назад';
+            return ceil($relativeTimeMin / DAY) . get_noun_plural_form(ceil($relativeTimeMin / DAY), ' день', ' дня', ' дней') . ' назад';
         }
         if (WEEK <= $relativeTimeMin && $relativeTimeMin < FIVE_WEEKS) {
             return floor($relativeTimeMin / WEEK) . get_noun_plural_form($relativeTimeMin / WEEK, ' неделю', ' недели', ' недель') . ' назад';
@@ -327,44 +271,4 @@ function timePassedAfterPublication(string $postTime) : string
     } else {
         return "0 минут назад";
     }
-}
-
-/**
- * Подключает к базе данных
- * @param array $dbParams
- * @return mysqli
- */
-function dbConnect(array $dbParams) : mysqli
-{
-    $connect = mysqli_connect($dbParams['host'], $dbParams['user'], $dbParams['password'], $dbParams['database']);
-
-    if (!$connect) {
-        exit("Ошибка подключения: " . mysqli_connect_error());
-    }
-    mysqli_set_charset($connect, "utf8");
-    return $connect;
-}
-
-/**
- * Возвращает посты пользователя
- * @param mysqli $connect
- * @return array
- */
-function getPosts(mysqli $connect) : array
-{
-    $sqlPost = 'SELECT post.content, post.picture, post.link, post.header, post.create_time, user.login, user.avatar, content_type.class_icon FROM `post` LEFT JOIN `user` ON post.user_id = user.id LEFT JOIN `content_type` ON post.content_type_id = content_type.id order by `count_views` LIMIT 6';
-    $resultPost = mysqli_query($connect, $sqlPost);
-    return mysqli_fetch_all($resultPost, MYSQLI_ASSOC);
-}
-
-/**
- * Возвращает тип контента
- * @param mysqli $connect
- * @return array
- */
-function getContentType(mysqli $connect) : array
-{
-    $sqlPost = 'SELECT `class_icon`, `width_icon`, `height_icon` FROM `content_type`';
-    $resultPost = mysqli_query($connect, $sqlPost);
-    return mysqli_fetch_all($resultPost, MYSQLI_ASSOC);
 }

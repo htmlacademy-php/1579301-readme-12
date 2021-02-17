@@ -10,15 +10,6 @@ CREATE TABLE `user` (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
 CREATE TABLE `content_type` (
-  `id`         int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name`       varchar(100) NOT NULL,
-  `class_icon` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8;
-
-INSERT INTO `content_type` VALUES (1, 'Текст', 'text'),(2, 'Цитата', 'quote'),(3, 'Картинка', 'photo'),(4, 'Видео', 'video'),(5, 'Ссылка', 'link');
-
-CREATE TABLE `content_type` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `class_icon` varchar(100) NOT NULL,
@@ -41,6 +32,8 @@ CREATE TABLE `post` (
   `user_id` int UNSIGNED NOT NULL,
   `is_repost` tinyint(1) DEFAULT 0,
   `original_user_id` int UNSIGNED NULL,
+  `comments_count` int UNSIGNED DEFAULT 0,
+  `likes_count` int UNSIGNED DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `post_content_type_id_idx` (`content_type_id`),
   KEY `post_user_id_idx` (`user_id`),
