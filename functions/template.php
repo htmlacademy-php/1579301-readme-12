@@ -272,3 +272,8 @@ function timePassedAfterPublication(string $postTime) : string
         return "0 минут назад";
     }
 }
+
+function hashtagArray($hashtags)
+{
+    return explode(' ', $hashtags);
+}

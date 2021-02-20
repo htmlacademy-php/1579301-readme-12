@@ -294,6 +294,13 @@ function updateViewsCount(mysqli $connect, ?int $postId)
     }
 }
 
+/**
+ * Проверяет существует ли запрошенный пост
+ * @param mysqli $connect
+ * @param int|null $postId - id текущего поста
+ * @return bool
+ */
+
 function isPostIsset(mysqli $connect, ?int $postId)
 {
     $sql = 'SELECT post.id FROM `post` WHERE post.id = ' . $postId . '';
@@ -305,6 +312,39 @@ function isPostIsset(mysqli $connect, ?int $postId)
     } else {
         echo 'Пост не найден!';
         exit();
+    }
+}
+
+function addPostText(mysqli $connect, $criteria)
+{
+    $sql = "INSERT INTO `post` VALUES (NULL, now(), '{$criteria['header']}', '{$criteria['content']}', '{$criteria['quote-author']}', NULL, NULL, NULL, 0, {$criteria['contentTypeId']}, 2, 0, 2, 0, 0)";
+    $result = mysqli_query($connect, $sql);
+
+
+    if (!$result) {
+        echo 'Ошибка' . mysqli_error($connect);
+    }
+}
+
+function addHashtag(mysqli $connect, array $hashtag, $lastPostId)
+{
+    foreach ($hashtag as $tag) {
+        $sql = "INSERT INTO `hashtag` VALUES(NULL, '{$tag}')";
+        $result = mysqli_query($connect, $sql);
+
+        if (!$result) {
+            echo 'Ошибка' . mysqli_error($connect);
+        }
+
+        $lastHashId = mysqli_insert_id($connect);
+
+        $sql = "INSERT INTO `post_hashtag` VALUES(NULL, '{$lastPostId}', '{$lastHashId}')";
+        $result = mysqli_query($connect, $sql);
+
+        if (!$result) {
+            echo 'Ошибка' . mysqli_error($connect);
+        }
+
     }
 }
 
