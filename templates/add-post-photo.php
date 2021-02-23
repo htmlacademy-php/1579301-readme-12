@@ -5,23 +5,23 @@
             <div class="form__text-inputs">
                 <div class="adding-post__input-wrapper form__input-wrapper">
                     <label class="adding-post__label form__label" for="photo-heading">Заголовок <span class="form__input-required">*</span></label>
-                    <div class="form__input-section">
-                        <input class="adding-post__input form__input" id="photo-heading" type="text" name="photo-heading" placeholder="Введите заголовок">
+                    <div class="form__input-section <?= isset($errors['header']) ? 'form__input-section--error' : '' ?>">
+                        <input class="adding-post__input form__input" id="photo-heading" type="text" name="header" placeholder="Введите заголовок">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                             <h3 class="form__error-title">Заголовок сообщения</h3>
-                            <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                            <p class="form__error-desc"><?= $errors['header'] ?></p>
                         </div>
                     </div>
                 </div>
                 <div class="adding-post__input-wrapper form__input-wrapper">
                     <label class="adding-post__label form__label" for="photo-url">Ссылка из интернета</label>
-                    <div class="form__input-section">
-                        <input class="adding-post__input form__input" id="photo-url" type="text" name="photo-heading" placeholder="Введите ссылку">
+                    <div class="form__input-section <?= isset($errors['photo']) ? 'form__input-section--error' : '' ?>"">
+                        <input class="adding-post__input form__input" id="photo-url" type="text" name="photo-url" placeholder="Введите ссылку">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                             <h3 class="form__error-title">Заголовок сообщения</h3>
-                            <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                            <p class="form__error-desc"><?= $errors['photo'] ?></p>
                         </div>
                     </div>
                 </div>
@@ -37,15 +37,19 @@
                     </div>
                 </div>
             </div>
+            <?php if (!empty($errors)) : ?>
             <div class="form__invalid-block">
                 <b class="form__invalid-slogan">Пожалуйста, исправьте следующие ошибки:</b>
                 <ul class="form__invalid-list">
-                    <li class="form__invalid-item">Заголовок. Это поле должно быть заполнено.</li>
+                    <?php foreach ($errors as $key => $error) : ?>
+                        <li class="form__invalid-item"><?= $error ?></li>
+                    <?php endforeach ?>
                 </ul>
             </div>
+            <?php endif ?>
         </div>
         <div class="adding-post__input-file-container form__input-container form__input-container--file">
-            <div class="adding-post__input-file-wrapper form__input-file-wrapper">
+      <!--      <div class="adding-post__input-file-wrapper form__input-file-wrapper">
                 <div class="adding-post__file-zone adding-post__file-zone--photo form__file-zone dropzone">
                     <input class="adding-post__input-file form__input-file" id="userpic-file-photo" type="file" name="photo" title=" ">
                     <div class="form__file-zone-text">
@@ -61,7 +65,9 @@
             </div>
             <div class="adding-post__file adding-post__file--photo form__file dropzone-previews">
 
-            </div>
+            </div>-->
+            <label for="photo">Выберите фото</label>
+            <input type="file" id="photo" name="photo">
         </div>
         <div class="adding-post__buttons">
             <button class="adding-post__submit button button--main" type="submit" name="submit" value="photo">Опубликовать</button>

@@ -14,7 +14,7 @@ $sort = $_GET;
 $sort['order'] = $sort['order'] ?? '';
 $sort['sort'] = $sort['sort'] ?? '';
 
-$order = (($sort['order'] == 'asc') ? 'desc' : 'asc');
+$order = (($sort['order'] == 'desc') ? 'asc' : 'desc');
 
 $totalPosts = getCountPosts($connect, $id);
 

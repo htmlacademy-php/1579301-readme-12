@@ -95,26 +95,38 @@
                             <p>
                                 <?= (mb_strlen(cutText($post['content'])) < mb_strlen($post['content'])) ? htmlspecialchars(cutText($post['content'])) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : htmlspecialchars(cutText($post['content'])) ?>
                             </p>
-                            <cite>Неизвестный Автор</cite>
+                            <cite><?= $post['quote_author']?></cite>
                         </blockquote>
                     <?php  elseif ($post['class_icon'] === 'post-text') : ?>
                         <p><?= (mb_strlen(cutText($post['content'])) < mb_strlen($post['content'])) ? htmlspecialchars(cutText($post['content'])) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : htmlspecialchars(cutText($post['content'])) ?></p>
                     <?php  elseif ($post['class_icon'] === 'post-photo') : ?>
                         <div class="post-photo__image-wrapper">
-                            <img src="img/<?= htmlspecialchars($post['picture']) ?>" alt="Фото от пользователя" width="360" height="240">
+                            <img src="uploads/<?= htmlspecialchars($post['picture']) ?>" alt="Фото от пользователя" width="360" height="240">
                         </div>
                     <?php  elseif ($post['class_icon'] === 'post-link') : ?>
                         <div class="post-link__wrapper">
-                            <a class="post-link__external" href="http://" title="Перейти по ссылке">
+                            <a class="post-link__external" href="<?= $post['link'] ?>" title="Перейти по ссылке">
                                 <div class="post-link__info-wrapper">
                                     <div class="post-link__icon-wrapper">
-                                        <img src="https://www.google.com/s2/favicons?domain=vitadental.ru" alt="Иконка">
+                                        <img src="https://www.google.com/s2/favicons?domain=<?= $post['link'] ?>" alt="Иконка">
                                     </div>
                                     <div class="post-link__info">
                                         <h3><?= $post['header'] ?></h3>
                                     </div>
                                 </div>
                                 <span><?= (mb_strlen(cutText($post['link'])) < mb_strlen($post['link'])) ? htmlspecialchars(cutText($post['link'])) . '...' . '<a class="post-text__more-link" href="#">Читать далее</a>' : htmlspecialchars(cutText($post['link'])) ?></span>
+                            </a>
+                        </div>
+                    <?php elseif ($post['class_icon'] === 'post-video') :  ?>
+                        <div class="post-video__block">
+                            <div class="post-video__preview">
+                                <img src="<?= $post['video_cover'] ?>" alt="Превью к видео" width="360" height="188">
+                            </div>
+                            <a href="<?= $post['video'] ?>" class="post-video__play-big button">
+                                <svg class="post-video__play-big-icon" width="14" height="14">
+                                    <use xlink:href="#icon-video-play-big"></use>
+                                </svg>
+                                <span class="visually-hidden">Запустить проигрыватель</span>
                             </a>
                         </div>
                     <?php endif; ?>

@@ -14,7 +14,7 @@ $id = getIdFromParams($_GET) ?? 1;
 
 $errors = [];
 
-$quoteContent = '';
+$quoteContent = NULL;
 
 if (isset($_POST['submit'])) {
 
@@ -48,40 +48,111 @@ if (isset($_POST['submit'])) {
         }
     }
 
+    if (!empty($_FILES['photo']['name'])) {
 
-    if (isset($_FILES['photo'])) {
+        $allowedPics = ['image/png', 'image/jpeg', 'image/gif'];
 
-        var_export($_FILES);
-        $fileName = $_FILES['photo']['name'];
-        $filePath = __DIR__ . '/uploads/';
-        $fileUrl = '/uploads/' . $fileName;
+        if (in_array($_FILES['photo']['type'], $allowedPics)) {
 
-        move_uploaded_file($_FILES['photo']['tmp_name'], $filePath . $fileName);
+            var_export($_FILES);
+            $fileName = $_FILES['photo']['name'];
+            $filePath = __DIR__ . '/uploads/';
+            $fileUrl = '/uploads/' . $fileName;
 
-        print("<a href='$fileUrl'>$fileName</a>");
+            move_uploaded_file($_FILES['photo']['tmp_name'], $filePath . $fileName);
+
+            echo $fileName;
+        } else {
+            $errors['mimeType'] = 'Разрешены только форматы png, jpeg, gif';
+        }
+    } elseif (!empty($_POST['photo-url'])) {
+
+        $filterUrl = filter_var($_POST['photo-url'], FILTER_VALIDATE_URL);
+
+         if ($filterUrl) {
+
+             $allowedPics = ['jpg', 'jpeg', 'png', 'gif'];
+
+             $fileName = basename(parse_url($filterUrl, PHP_URL_PATH));
+             $mime = pathinfo($fileName, PATHINFO_EXTENSION);
+
+             if (in_array($mime, $allowedPics)) {
+                 
+                 $downloadFile = file_get_contents($filterUrl);
+                 $filePath = __DIR__ . '/uploads/';
+                 file_put_contents($filePath . $fileName, $downloadFile);
+             } else {
+                 $errors['photo'] = 'Ссылка должна заказчиваться на .jpg, .jpeg, .png, .gif';
+             }
+         } else {
+             $errors['photo'] = 'Необходимо указать корректную ссылку';
+         }
     }
 
+    if ($_POST['submit'] === 'link') {
+
+        if (!empty($_POST['post-link'])) {
+
+            $filterUrl = filter_var($_POST['post-link'], FILTER_VALIDATE_URL);
+
+            if ($filterUrl) {
+                $link = $filterUrl;
+            } else {
+                $errors['link'] = 'Ссылка должна быть корректным значением';
+            }
+        } else {
+            $errors['link'] = 'Сыылка должна быть указана';
+        }
+    }
+
+    if ($_POST['submit'] === 'video') {
+
+        if (!empty($_POST['video'])) {
+
+            $filterUrl = filter_var($_POST['video'], FILTER_VALIDATE_URL);
+
+            if ($filterUrl) {
+
+                if (check_youtube_url($filterUrl) === true) {
+                    $video = $filterUrl;
+                    $videoCover = embed_youtube_cover($filterUrl);
+                    echo $videoCover;
+
+                } else {
+                    $errors['video'] = check_youtube_url($filterUrl);
+                }
+
+            } else {
+                $errors['video'] = 'Ссылка на youtube должна быть корретной';
+            }
+
+        } else {
+            $errors['video'] = 'Ссылка на видео должна быть заполнена';
+        }
+    }
 
     $criteria = [
         'header' => $header ?? NULL,
         'content' => $content ?? $quoteContent,
         'quote-author' => $quoteAuthor ?? NULL,
         'contentTypeId' => $id,
+        'picture' => $fileName ?? NULL,
+        'link' => $link ?? NULL,
+        'video' => $video ?? NULL,
+        'videoCover' => $videoCover ?? NULL,
     ];
 
-    var_export($_POST);
+    if (!count($errors)) {
 
-    addPostText($connect, $criteria);
+        addPost($connect, $criteria);
 
-    if (!empty(trim($_POST['hashtag']))) {
-        $hashtagArray = hashtagArray(trim($_POST['hashtag']));
-        var_export($hashtagArray);
-        addHashtag($connect, $hashtagArray, mysqli_insert_id($connect));
+        if (!empty(trim($_POST['hashtag']))) {
+            $hashtagArray = hashtagArray(trim($_POST['hashtag']));
+            var_export($hashtagArray);
+            addHashtag($connect, $hashtagArray, mysqli_insert_id($connect));
+        }
     }
 }
-
-
-
 
 $title = 'Создание поста';
 

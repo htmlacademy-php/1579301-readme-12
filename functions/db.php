@@ -81,7 +81,7 @@ function db_get_prepare_stmt(mysqli $link, string $sql, array $data = [])
  */
 function getPosts(mysqli $connect, ?array $criteria) : array
 {
-    $sqlPost = 'SELECT post.id, post.content, post.content_type_id, post.picture, post.link, post.header, post.create_time, post.comments_count, post.likes_count, user.login, user.avatar, content_type.class_icon 
+    $sqlPost = 'SELECT post.id, post.content, post.content_type_id, post.picture, post.link, post.header, post.create_time, post.comments_count, post.likes_count, post.quote_author, post.video, post.video_cover, user.login, user.avatar, content_type.class_icon 
                 FROM `post` LEFT JOIN `user` ON post.user_id = user.id 
                 LEFT JOIN `content_type` ON post.content_type_id = content_type.id';
     if ($criteria['contentTypeId']) {
@@ -145,7 +145,7 @@ function getCountPosts(mysqli $connect, ?string $type): int
  */
 function getPost(mysqli $connect, int $postId): array
 {
-    $sqlPost = 'SELECT post.id, post.content, post.content_type_id, post.picture, post.link, post.quote_author, post.header, post.create_time, post.user_id, post.comments_count, post.likes_count, post.count_views, user.login, user.create_time as createUser ,user.avatar, content_type.class_icon FROM `post` LEFT JOIN `user` ON post.user_id = user.id LEFT JOIN `content_type` ON post.content_type_id = content_type.id WHERE post.id = ' . $postId . '';
+    $sqlPost = 'SELECT post.id, post.content, post.content_type_id, post.picture, post.link, post.quote_author, post.header, post.create_time, post.user_id, post.comments_count, post.likes_count, post.count_views, post.video, post.video_cover, user.login, user.create_time as createUser ,user.avatar, content_type.class_icon FROM `post` LEFT JOIN `user` ON post.user_id = user.id LEFT JOIN `content_type` ON post.content_type_id = content_type.id WHERE post.id = ' . $postId . '';
     $resultPost = mysqli_query($connect, $sqlPost);
 
     if ($resultPost) {
@@ -300,7 +300,6 @@ function updateViewsCount(mysqli $connect, ?int $postId)
  * @param int|null $postId - id текущего поста
  * @return bool
  */
-
 function isPostIsset(mysqli $connect, ?int $postId)
 {
     $sql = 'SELECT post.id FROM `post` WHERE post.id = ' . $postId . '';
@@ -315,18 +314,32 @@ function isPostIsset(mysqli $connect, ?int $postId)
     }
 }
 
-function addPostText(mysqli $connect, $criteria)
-{
-    $sql = "INSERT INTO `post` VALUES (NULL, now(), '{$criteria['header']}', '{$criteria['content']}', '{$criteria['quote-author']}', NULL, NULL, NULL, 0, {$criteria['contentTypeId']}, 2, 0, 2, 0, 0)";
-    $result = mysqli_query($connect, $sql);
+/**
+ * Добавляет созданный пользователем пост
+ * @param mysqli $connect
+ * @param $criteria - массив с данными для заполнения таблицы post
 
+ */
+function addPost(mysqli $connect, array $criteria)
+{
+    $sql = "INSERT INTO `post` VALUES (NULL, now(), ?, ?, ?, ?, ?, ?, ?, 0, ?, 2, 0, 2, 0, 0)";
+
+    $stmt = mysqli_prepare($connect, $sql);
+    mysqli_stmt_bind_param($stmt, 'sssssssi', $criteria['header'], $criteria['content'], $criteria['quote-author'], $criteria['picture'], $criteria['video'], $criteria['videoCover'], $criteria['link'], $criteria['contentTypeId']);
+    $result = mysqli_stmt_execute($stmt);
 
     if (!$result) {
         echo 'Ошибка' . mysqli_error($connect);
     }
 }
 
-function addHashtag(mysqli $connect, array $hashtag, $lastPostId)
+/**
+ * Добавляет хештег к позданному посту
+ * @param mysqli $connect
+ * @param array $hashtag
+ * @param $lastPostId
+ */
+function addHashtag(mysqli $connect, array $hashtag, int $lastPostId)
 {
     foreach ($hashtag as $tag) {
         $sql = "INSERT INTO `hashtag` VALUES(NULL, '{$tag}')";
@@ -344,7 +357,7 @@ function addHashtag(mysqli $connect, array $hashtag, $lastPostId)
         if (!$result) {
             echo 'Ошибка' . mysqli_error($connect);
         }
-
     }
 }
+
 
