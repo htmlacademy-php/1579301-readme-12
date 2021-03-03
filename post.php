@@ -3,10 +3,8 @@
 require_once 'functions/db.php';
 require_once 'functions/template.php';
 require_once 'functions/request.php';
+require_once 'bootstrap.php';
 
-$config = require 'config.php';
-
-$connect = dbConnect($config['db']);
 
 $contentType = getContentTypes($connect);
 

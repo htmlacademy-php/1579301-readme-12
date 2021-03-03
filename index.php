@@ -3,10 +3,7 @@
 require_once 'functions/db.php';
 require_once 'functions/template.php';
 require_once 'functions/request.php';
-
-$config = require 'config.php';
-
-$connect = dbConnect($config['db']);
+require_once 'bootstrap.php';
 
 $id = getIdFromParams($_GET);
 
@@ -18,7 +15,6 @@ $order = (($sort['order'] == 'desc') ? 'asc' : 'desc');
 
 $totalPosts = getCountPosts($connect, $id);
 
-/*$productsOnPage = 6; // Желаемое количество товаров на странице*/
 $currentPage = $_GET['page'] ?? 1; // Извлекаем из URL текущую страницу
 $totalPages = ceil($totalPosts / $config['pagination']['postsOnPage']); // Общее число страниц
 $start = $currentPage * $config['pagination']['postsOnPage'] - $config['pagination']['postsOnPage']; // Вычисляем с какого номера необходимо выводить сообщение
