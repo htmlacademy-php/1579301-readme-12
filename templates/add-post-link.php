@@ -6,7 +6,7 @@
                 <div class="adding-post__input-wrapper form__input-wrapper">
                     <label class="adding-post__label form__label" for="link-heading">Заголовок <span class="form__input-required">*</span></label>
                     <div class="form__input-section <?= isset($errors['header']) ? 'form__input-section--error' : '' ?>">
-                        <input class="adding-post__input form__input" id="link-heading" type="text" name="header" placeholder="Введите заголовок">
+                        <input class="adding-post__input form__input" id="link-heading" type="text" name="header" value="<?= $_POST['header'] ?? '' ?>"placeholder="Введите заголовок">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                             <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -17,7 +17,7 @@
                 <div class="adding-post__textarea-wrapper form__input-wrapper">
                     <label class="adding-post__label form__label" for="post-link">Ссылка <span class="form__input-required">*</span></label>
                     <div class="form__input-section <?= isset($errors['link']) ? 'form__input-section--error' : '' ?>">
-                        <input class="adding-post__input form__input" id="post-link" type="text" name="post-link">
+                        <input class="adding-post__input form__input" id="post-link" type="text" name="link">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                             <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -49,7 +49,7 @@
             <?php endif ?>
         </div>
         <div class="adding-post__buttons">
-            <button class="adding-post__submit button button--main" type="submit" name="submit" value="link">Опубликовать</button>
+            <button class="adding-post__submit button button--main" type="submit" name="submit" value="4">Опубликовать</button>
             <a class="adding-post__close" href="#">Закрыть</a>
         </div>
     </form>

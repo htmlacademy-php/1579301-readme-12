@@ -320,12 +320,14 @@ function isPostIsset(mysqli $connect, ?int $postId)
  * @param $criteria - массив с данными для заполнения таблицы post
 
  */
-function addPost(mysqli $connect, array $criteria)
+function addPost(mysqli $connect, array $data)
 {
     $sql = "INSERT INTO `post` VALUES (NULL, now(), ?, ?, ?, ?, ?, ?, ?, 0, ?, 2, 0, 2, 0, 0)";
 
+    $contentTypeId = getIdFromParams($_GET) ?? 1;
+
     $stmt = mysqli_prepare($connect, $sql);
-    mysqli_stmt_bind_param($stmt, 'sssssssi', $criteria['header'], $criteria['content'], $criteria['quote-author'], $criteria['picture'], $criteria['video'], $criteria['videoCover'], $criteria['link'], $criteria['contentTypeId']);
+    mysqli_stmt_bind_param($stmt, 'sssssssi', $data['header'], $data['content'], $data['quote-author'], $data['photo']['name'], $data['video'], $data['videoCover'], $data['link'], $contentTypeId);
     $result = mysqli_stmt_execute($stmt);
 
     if (!$result) {

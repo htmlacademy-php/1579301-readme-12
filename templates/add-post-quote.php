@@ -16,12 +16,12 @@
                 </div>
                 <div class="adding-post__input-wrapper form__textarea-wrapper">
                     <label class="adding-post__label form__label" for="cite-text">Текст цитаты <span class="form__input-required">*</span></label>
-                    <div class="form__input-section <?= isset($errors['quote-content']) ? 'form__input-section--error' : '' ?>">
-                        <textarea class="adding-post__textarea adding-post__textarea--quote form__textarea form__input" id="cite-text" name="quote-text" placeholder="Текст цитаты"><?= $_POST['quote-text'] ?? '' ?></textarea>
+                    <div class="form__input-section <?= isset($errors['content']) ? 'form__input-section--error' : '' ?>">
+                        <textarea class="adding-post__textarea adding-post__textarea--quote form__textarea form__input" id="cite-text" name="content" placeholder="Текст цитаты"><?= $_POST['content'] ?? '' ?></textarea>
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                             <h3 class="form__error-title">Заголовок сообщения</h3>
-                            <p class="form__error-desc"><?= $errors['quote-content'] ?></p>
+                            <p class="form__error-desc"><?= $errors['content'] ?></p>
                         </div>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
             <?php endif ?>
         </div>
         <div class="adding-post__buttons">
-            <button class="adding-post__submit button button--main" type="submit" name="submit" value="quote">Опубликовать</button>
+            <button class="adding-post__submit button button--main" type="submit" name="submit" value="2">Опубликовать</button>
             <a class="adding-post__close" href="#">Закрыть</a>
         </div>
     </form>

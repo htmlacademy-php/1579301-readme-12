@@ -17,7 +17,7 @@
                 <div class="adding-post__textarea-wrapper form__textarea-wrapper">
                     <label class="adding-post__label form__label" for="post-text">Текст поста <span class="form__input-required">*</span></label>
                     <div class="form__input-section <?= isset($errors['content']) ? 'form__input-section--error' : '' ?>">
-                        <textarea class="adding-post__textarea form__textarea form__input" id="post-text" name="post-text" placeholder="Введите текст публикации"><?= $_POST['post-text'] ?? '' ?></textarea>
+                        <textarea class="adding-post__textarea form__textarea form__input" id="post-text" name="content" placeholder="Введите текст публикации"><?= $_POST['content'] ?? '' ?></textarea>
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                             <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -49,7 +49,7 @@
             <?php endif ?>
         </div>
         <div class="adding-post__buttons">
-            <button class="adding-post__submit button button--main" type="submit" name="submit" value="text">Опубликовать</button>
+            <button class="adding-post__submit button button--main" type="submit" name="submit" value="1">Опубликовать</button>
             <a class="adding-post__close" href="#">Закрыть</a>
         </div>
     </form>
