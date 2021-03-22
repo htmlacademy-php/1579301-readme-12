@@ -6,13 +6,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/functions/request.php';
 
 $config = require $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 
-$connect = dbConnect($config['db']);
+$connection = dbConnect($config['db']);
 
 $id = getIdFromParams($_GET);
 
 switch($_GET['action']) {
     case 'like':
-        updateLikesCount($connect, $id);
+        updateLikesCount($connection, $id);
         header('Location: ' . $_SERVER['HTTP_REFERER']);
         break;
 }

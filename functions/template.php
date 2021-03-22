@@ -149,10 +149,10 @@ function embed_youtube_cover($youtube_url)
 
     if ($id) {
         $src = sprintf("https://img.youtube.com/vi/%s/mqdefault.jpg", $id);
-        $res = '<img alt="youtube cover" width="320" height="120" src="' . $src . '" />';
+        /*$res = '<img alt="youtube cover" width="320" height="120" src="' . $src . '" />';*/
     }
 
-    return $res;
+    return $src;
 }
 
 /**
@@ -271,4 +271,45 @@ function timePassedAfterPublication(string $postTime) : string
     } else {
         return "0 минут назад";
     }
+}
+
+/**
+ * Возвращает массив хештегов
+ * @param $hashtags
+ * @return array
+ */
+function hashtagArray($hashtags): array
+{
+    return explode(' ', $hashtags);
+}
+
+/**
+ * Возвращает title указанной страницы
+ * @param $url
+ * @return string
+ */
+function getTitle($url): string
+{
+    $page = file_get_contents($url);
+    $title = preg_match('/<title[^>]*>(.*?)<\/title>/ims', $page, $match) ? $match[1] : null;
+    return $title;
+}
+
+/**
+ * Возвращает нужный пост шаблон
+ * @param int $contentTypeId - id необходимого шаблона
+ * @return string
+ *
+ */
+function getFormTemplate(int $contentTypeId):string
+{
+    $map = [
+        CONTENT_TYPE_TEXT => 'add-post-text.php',
+        CONTENT_TYPE_QUOTE => 'add-post-quote.php',
+        CONTENT_TYPE_PHOTO => 'add-post-photo.php',
+        CONTENT_TYPE_VIDEO => 'add-post-video.php',
+        CONTENT_TYPE_LINK => 'add-post-link.php'
+    ];
+
+    return $map[$contentTypeId];
 }

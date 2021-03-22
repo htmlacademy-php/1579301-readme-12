@@ -26,6 +26,7 @@ CREATE TABLE `post` (
   `quote_author` varchar(100) DEFAULT NULL,
   `picture` varchar(100) DEFAULT NULL,
   `video` varchar(100) DEFAULT NULL,
+  `video_cover` varchar(100) DEFAULT NULL,
   `link` varchar(100) DEFAULT NULL,
   `count_views` int UNSIGNED DEFAULT 0,
   `content_type_id` int UNSIGNED NOT NULL,
