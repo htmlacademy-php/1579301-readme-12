@@ -13,7 +13,7 @@ $sort['sort'] = $sort['sort'] ?? '';
 
 $order = (($sort['order'] == 'desc') ? 'asc' : 'desc');
 
-$totalPosts = getCountPosts($connect, $id);
+$totalPosts = getCountPosts($connection, $id);
 
 $currentPage = $_GET['page'] ?? 1; // Извлекаем из URL текущую страницу
 $totalPages = ceil($totalPosts / $config['pagination']['postsOnPage']); // Общее число страниц
@@ -34,9 +34,9 @@ $criteria = [
     ]
 ];
 
-$posts = getPosts($connect, $criteria);
+$posts = getPosts($connection, $criteria);
 
-$contentType = getContentTypes($connect);
+$contentType = getContentTypes($connection);
 
 $is_auth = rand(0, 1);
 

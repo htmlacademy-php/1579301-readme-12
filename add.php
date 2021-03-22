@@ -28,7 +28,7 @@ $user_name = 'Dima'; // укажите здесь ваше имя
 $formHandledData['errors'] = [];
 $formHandledData['data'] = [];
 
-$contentType = getContentTypes($connect);
+$contentType = getContentTypes($connection);
 
 $contentTypeId = getIdFromParams($_GET) ?? 1;
 
@@ -42,19 +42,19 @@ if (isset($_POST['submit'])) {
 
     switch ($_POST['submit']) {
         case CONTENT_TYPE_TEXT:
-            $formHandledData = addText($connect, $_POST);
+            $formHandledData = addText($connection, $_POST);
             break;
         case CONTENT_TYPE_QUOTE:
-            $formHandledData = addQuote($connect, $_POST);
+            $formHandledData = addQuote($connection, $_POST);
             break;
         case CONTENT_TYPE_PHOTO:
-            $formHandledData = addPhoto($connect, $_POST, $_FILES);
+            $formHandledData = addPhoto($connection, $_POST, $_FILES);
             break;
         case CONTENT_TYPE_VIDEO:
-            $formHandledData = addVideo($connect, $_POST);
+            $formHandledData = addVideo($connection, $_POST);
             break;
         case CONTENT_TYPE_LINK:
-            $formHandledData = addLink($connect, $_POST);
+            $formHandledData = addLink($connection, $_POST);
             break;
     }
 }

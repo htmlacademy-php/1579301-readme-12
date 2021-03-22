@@ -2,4 +2,4 @@
 
 $config = require 'config.php';
 
-$connect = dbConnect($config['db']);
+$connection = dbConnect($config['db']);

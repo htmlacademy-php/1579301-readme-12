@@ -6,15 +6,15 @@ require_once 'functions/request.php';
 require_once 'bootstrap.php';
 
 
-$contentType = getContentTypes($connect);
+$contentType = getContentTypes($connection);
 
 $id = getIdFromParams($_GET);
 
-$isPostIsset = isPostIsset($connect, $id);
+$isPostIsset = isPostIsset($connection, $id);
 
-updateViewsCount($connect, $id);
+updateViewsCount($connection, $id);
 
-$post = getPost($connect, $id);
+$post = getPost($connection, $id);
 
 $postCreatorId = $post['user_id'];
 
@@ -22,17 +22,17 @@ $validMsg = true;
 
 if (!empty($_POST)) {
     if (validateComment($_POST)) {
-        addComment($connect, $id, $postCreatorId, $_POST);
+        addComment($connection, $id, $postCreatorId, $_POST);
     } else {
         $validMsg = validateComment($_POST);
     }
 }
 
-$comments = getComments($connect, $id);
+$comments = getComments($connection, $id);
 
-$countSubscribers = countSubscribers($connect, $id);
+$countSubscribers = countSubscribers($connection, $id);
 
-$countPosts = countPosts($connect, $id);
+$countPosts = countPosts($connection, $id);
 
 $title = 'публикация';
 

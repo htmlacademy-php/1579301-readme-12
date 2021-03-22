@@ -2,23 +2,23 @@
 
 /**
  * Добавляет текстовый пост на страницу
- * @param $connect - подключение к бд
+ * @param $connection - подключение к бд
  * @param array $data - глобальный массив $_POST
  * @return array
  */
-function addText(mysqli $connect, array $data):array
+function addText(mysqli $connection, array $data):array
 {
     $data = filterFormText($data);
 
     $errors = validateFormText($data);
 
     if (!$errors) {
-        addPost($connect, $data);
-        $lastPostId = mysqli_insert_id($connect);
+        addPost($connection, $data);
+        $lastPostId = mysqli_insert_id($connection);
 
         if (!empty(trim($_POST['hashtag']))) {
             $hashtagArray = hashtagArray(trim($_POST['hashtag']));
-            addHashtag($connect, $hashtagArray, $lastPostId);
+            addHashtag($connection, $hashtagArray, $lastPostId);
         }
         header('Location: /post.php?id='.$lastPostId);
         exit();
@@ -32,24 +32,24 @@ function addText(mysqli $connect, array $data):array
 
 /**
  * Добавляет пост-цитату на страницу
- * @param $connect - подключение к бд
+ * @param $connection - подключение к бд
  * @param array $data - глобальный массив $_POST
  * @return array
  */
 
-function addQuote(mysqli $connect, array $data):array
+function addQuote(mysqli $connection, array $data):array
 {
     $data = filterFormQuote($data);
 
     $errors = validateFormQuote($data);
 
     if (!$errors) {
-        addPost($connect, $data);
-        $lastPostId = mysqli_insert_id($connect);
+        addPost($connection, $data);
+        $lastPostId = mysqli_insert_id($connection);
 
         if (!empty(trim($_POST['hashtag']))) {
             $hashtagArray = hashtagArray(trim($_POST['hashtag']));
-            addHashtag($connect, $hashtagArray, $lastPostId);
+            addHashtag($connection, $hashtagArray, $lastPostId);
         }
         header('Location: /post.php?id='.$lastPostId);
         exit();
@@ -63,12 +63,12 @@ function addQuote(mysqli $connect, array $data):array
 
 /**
  * Добавляет пост-фото на страницу
- * @param $connect - подключение к бд
+ * @param $connection - подключение к бд
  * @param array $dataPost - глобальный массив $_POST
  * @param array $dataFiles - - глобальный массив $_FILES
  * @return array
  */
-function addPhoto(mysqli $connect, array $dataPost, array $dataFiles)
+function addPhoto(mysqli $connection, array $dataPost, array $dataFiles)
 {
     $data = filterFormPhoto($dataPost, $dataFiles);
 
@@ -82,12 +82,12 @@ function addPhoto(mysqli $connect, array $dataPost, array $dataFiles)
             $data['photo']['name'] = uploadPhotoUrl($data);
         }
 
-        addPost($connect, $data);
-        $lastPostId = mysqli_insert_id($connect);
+        addPost($connection, $data);
+        $lastPostId = mysqli_insert_id($connection);
 
         if (!empty(trim($data['hashtag']))) {
             $hashtagArray = hashtagArray(trim($data['hashtag']));
-            addHashtag($connect, $hashtagArray, $lastPostId);
+            addHashtag($connection, $hashtagArray, $lastPostId);
         }
         header('Location: /post.php?id='.$lastPostId);
         exit();
@@ -101,11 +101,11 @@ function addPhoto(mysqli $connect, array $dataPost, array $dataFiles)
 
 /**
  * Добавляет пост-видео на страницу
- * @param $connect - подключение к бд
+ * @param $connection - подключение к бд
  * @param array $data - глобальный массив $_POST
  * @return array
  */
-function addVideo(mysqli $connect, array $data)
+function addVideo(mysqli $connection, array $data)
 {
     $data = filterFormVideo($data);
 
@@ -114,12 +114,12 @@ function addVideo(mysqli $connect, array $data)
     if (!$errors) {
         $data['videoCover'] = embed_youtube_cover($data['video']);
 
-        addPost($connect, $data);
-        $lastPostId = mysqli_insert_id($connect);
+        addPost($connection, $data);
+        $lastPostId = mysqli_insert_id($connection);
 
         if (!empty(trim($data['hashtag']))) {
             $hashtagArray = hashtagArray(trim($data['hashtag']));
-            addHashtag($connect, $hashtagArray, $lastPostId);
+            addHashtag($connection, $hashtagArray, $lastPostId);
         }
         header('Location: /post.php?id='.$lastPostId);
         exit();
@@ -133,11 +133,11 @@ function addVideo(mysqli $connect, array $data)
 
 /**
  * Добавляет пост-ссылку на страницу
- * @param $connect - подключение к бд
+ * @param $connection - подключение к бд
  * @param array $data - глобальный массив $_POST
  * @return array
  */
-function addLink(mysqli $connect, array $data)
+function addLink(mysqli $connection, array $data)
 {
     $data = filterFormLink($data);
 
@@ -145,12 +145,12 @@ function addLink(mysqli $connect, array $data)
 
     if (!$errors) {
 
-        addPost($connect, $data);
-        $lastPostId = mysqli_insert_id($connect);
+        addPost($connection, $data);
+        $lastPostId = mysqli_insert_id($connection);
 
         if (!empty(trim($data['hashtag']))) {
             $hashtagArray = hashtagArray(trim($data['hashtag']));
-            addHashtag($connect, $hashtagArray, $lastPostId);
+            addHashtag($connection, $hashtagArray, $lastPostId);
         }
         header('Location: /post.php?id='.$lastPostId);
         exit();
