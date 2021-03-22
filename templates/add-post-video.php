@@ -6,7 +6,7 @@
                 <div class="adding-post__input-wrapper form__input-wrapper">
                     <label class="adding-post__label form__label" for="video-heading">Заголовок <span class="form__input-required">*</span></label>
                     <div class="form__input-section <?= isset($errors['header']) ? 'form__input-section--error' : '' ?>">
-                        <input class="adding-post__input form__input" id="video-heading" type="text" name="header" value="<?= $_POST['header'] ?? '' ?>" placeholder="Введите заголовок">
+                        <input class="adding-post__input form__input" id="video-heading" type="text" name="header" value="<?= $data['header'] ?? '' ?>" placeholder="Введите заголовок">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                             <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -17,7 +17,7 @@
                 <div class="adding-post__input-wrapper form__input-wrapper">
                     <label class="adding-post__label form__label" for="video-url">Ссылка youtube <span class="form__input-required">*</span></label>
                     <div class="form__input-section <?= isset($errors['video']) ? 'form__input-section--error' : '' ?>">
-                        <input class="adding-post__input form__input" id="video-url" type="text" name="video" value="<?= $_POST['video'] ?? '' ?>" placeholder="Введите ссылку">
+                        <input class="adding-post__input form__input" id="video-url" type="text" name="video" value="<?= $data['video'] ?? '' ?>" placeholder="Введите ссылку">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                             <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -28,7 +28,7 @@
                 <div class="adding-post__input-wrapper form__input-wrapper">
                     <label class="adding-post__label form__label" for="video-tags">Теги</label>
                     <div class="form__input-section">
-                        <input class="adding-post__input form__input" id="video-tags" type="text" name="hashtag" value="<?= $_POST['hashtag'] ?? '' ?>" placeholder="Введите тег">
+                        <input class="adding-post__input form__input" id="video-tags" type="text" name="hashtag" value="<?= $data['hashtag'] ?? '' ?>" placeholder="Введите тег">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                             <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -50,7 +50,7 @@
         </div>
 
         <div class="adding-post__buttons">
-            <button class="adding-post__submit button button--main" type="submit" name="submit" value="5">Опубликовать</button>
+            <button class="adding-post__submit button button--main" type="submit" name="submit" value="4">Опубликовать</button>
             <a class="adding-post__close" href="#">Закрыть</a>
         </div>
     </form>

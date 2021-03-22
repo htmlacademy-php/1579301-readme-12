@@ -20,14 +20,13 @@ function addText(mysqli $connect, array $data):array
             $hashtagArray = hashtagArray(trim($_POST['hashtag']));
             addHashtag($connect, $hashtagArray, $lastPostId);
         }
-        header('Location: http://1579301-readme-12/post.php?id='.$lastPostId);
+        header('Location: /post.php?id='.$lastPostId);
         exit();
     }
 
     return [
         'data' => $data,
         'errors' => $errors,
-        'template' => 'add-post-text.php'
     ];
 }
 
@@ -52,14 +51,13 @@ function addQuote(mysqli $connect, array $data):array
             $hashtagArray = hashtagArray(trim($_POST['hashtag']));
             addHashtag($connect, $hashtagArray, $lastPostId);
         }
-        header('Location: http://1579301-readme-12/post.php?id='.$lastPostId);
+        header('Location: /post.php?id='.$lastPostId);
         exit();
     }
 
     return [
         'data' => $data,
         'errors' => $errors,
-        'template' => 'add-post-text.php'
     ];
 }
 
@@ -91,14 +89,13 @@ function addPhoto(mysqli $connect, array $dataPost, array $dataFiles)
             $hashtagArray = hashtagArray(trim($data['hashtag']));
             addHashtag($connect, $hashtagArray, $lastPostId);
         }
-        header('Location: http://1579301-readme-12/post.php?id='.$lastPostId);
+        header('Location: /post.php?id='.$lastPostId);
         exit();
     }
 
     return [
         'data' => $data,
         'errors' => $errors,
-        'template' => 'add-post-text.php'
     ];
 }
 
@@ -124,14 +121,13 @@ function addVideo(mysqli $connect, array $data)
             $hashtagArray = hashtagArray(trim($data['hashtag']));
             addHashtag($connect, $hashtagArray, $lastPostId);
         }
-        header('Location: http://1579301-readme-12/post.php?id='.$lastPostId);
+        header('Location: /post.php?id='.$lastPostId);
         exit();
     }
 
     return [
         'data' => $data,
         'errors' => $errors,
-        'template' => 'add-post-text.php'
     ];
 }
 
@@ -156,13 +152,12 @@ function addLink(mysqli $connect, array $data)
             $hashtagArray = hashtagArray(trim($data['hashtag']));
             addHashtag($connect, $hashtagArray, $lastPostId);
         }
-        header('Location: http://1579301-readme-12/post.php?id='.$lastPostId);
+        header('Location: /post.php?id='.$lastPostId);
         exit();
     }
 
     return [
         'data' => $data,
         'errors' => $errors,
-        'template' => 'add-post-text.php'
     ];
 }
