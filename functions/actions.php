@@ -161,3 +161,32 @@ function addLink(mysqli $connection, array $data)
         'errors' => $errors,
     ];
 }
+
+/**
+ * Регистрирует нового пользователя в базу данных
+ * @param mysqli $connection
+ * @param array $dataPost - суперглобальный массив $_POST
+ * @param array $dataFiles - - суперглобальный массив $_FILES
+ * @return array
+ */
+function registrationUser(mysqli $connection, array $dataPost, array $dataFiles)
+{
+    $data = filterFormRegistration($dataPost, $dataFiles);
+
+    $errors = validateFormRegistration($connection, $data);
+
+    var_export($data);
+
+    if (!$errors) {
+        addUser($connection, $data);
+    }
+
+    if (!empty($data['avatar']['name'])) {
+        uploadAvatar($data);
+    }
+
+    return [
+        'data' => $data,
+        'errors' => $errors,
+    ];
+}

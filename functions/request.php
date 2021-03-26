@@ -68,4 +68,12 @@ function uploadPhotoUrl($data)
     return $fileName;
 }
 
+function uploadAvatar($data)
+{
+    $fileName = $data['avatar']['name'];
+    $filePath = $_SERVER['DOCUMENT_ROOT'] . '/uploads/avatar/';
+
+    move_uploaded_file($data['avatar']['tmp_name'], $filePath . $fileName);
+}
+
 

@@ -115,3 +115,31 @@ function filterFormLink(array $data):array
 
     return $result;
 }
+
+/**
+ * Фильтрует данные формы регистрация
+ * @param array $dataPost - - глобальный массив $_POST
+ * @param array $dataFiles - - глобальный массив $_FILES
+ * @return array
+ */
+function filterFormRegistration(array $dataPost,  array $dataFiles)
+{
+    $result = [];
+
+    $fields = [
+        'email',
+        'login',
+        'password',
+        'password-repeat',
+    ];
+
+    foreach ($fields as $field) {
+        $result[$field] = htmlspecialchars($dataPost[$field] ?? '');
+    }
+
+    if (!empty($dataFiles['avatar']['name'])) {
+        $result['avatar'] = $dataFiles['avatar'];
+    }
+
+    return $result;
+}
