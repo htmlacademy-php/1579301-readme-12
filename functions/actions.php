@@ -165,28 +165,23 @@ function addLink(mysqli $connection, array $data)
 /**
  * Регистрирует нового пользователя в базу данных
  * @param mysqli $connection
- * @param array $dataPost - суперглобальный массив $_POST
- * @param array $dataFiles - - суперглобальный массив $_FILES
+ * @param array $filteredData - отфильтрованный массыв $_POST и $_FILES
  * @return array
  */
-function registrationUser(mysqli $connection, array $dataPost, array $dataFiles)
+function registrationUser(mysqli $connection, array $filteredData)
 {
-    $data = filterFormRegistration($dataPost, $dataFiles);
-
-    $errors = validateFormRegistration($connection, $data);
-
-    var_export($data);
+    $errors = validateFormRegistration($connection, $filteredData);
 
     if (!$errors) {
-        addUser($connection, $data);
+        addUser($connection, $filteredData);
     }
 
-    if (!empty($data['avatar']['name'])) {
-        uploadAvatar($data);
+    if (!empty($filteredData['avatar']['name'])) {
+        uploadAvatar($filteredData);
     }
 
     return [
-        'data' => $data,
+        'data' => $filteredData,
         'errors' => $errors,
     ];
 }

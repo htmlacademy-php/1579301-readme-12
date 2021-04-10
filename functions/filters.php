@@ -118,11 +118,11 @@ function filterFormLink(array $data):array
 
 /**
  * Фильтрует данные формы регистрация
- * @param array $dataPost - - глобальный массив $_POST
- * @param array $dataFiles - - глобальный массив $_FILES
+ * @param array $dataPost - глобальный массив $_POST
+ * @param array $dataFiles - глобальный массив $_FILES
  * @return array
  */
-function filterFormRegistration(array $dataPost,  array $dataFiles)
+function filterFormRegistration(array $dataPost,  array $dataFiles):array
 {
     $result = [];
 

@@ -20,16 +20,20 @@ function validateFormRegistration(mysqli $connection, $data)
         $errors['password-repeat'] = $error;
     }
 
+    if ($error = validateFormAvatar($data['avatar']['type'] ?? NULL)) {
+        $errors['avatar'] = $error;
+    }
+
     return $errors;
 }
 
 /**
  * Проверяет email регистрации
  * @param mysqli $connection
- * @param $email - введенный email
+ * @param string $email - введенный email
  * @return string|null
  */
-function validateFormEmail(mysqli $connection, $email)
+function validateFormEmail(mysqli $connection, string $email):?string
 {
     $email = filter_var($email, FILTER_VALIDATE_EMAIL);
 
@@ -38,8 +42,8 @@ function validateFormEmail(mysqli $connection, $email)
     }
 
     if ($email) {
-        $isEmailIsSet = isEmailIsSet($connection, $email);
-        if ($isEmailIsSet) {
+        $issetEmail = issetEmail($connection, $email);
+        if ($issetEmail) {
             return 'Введенный email уже занят!';
         }
     }
@@ -49,10 +53,10 @@ function validateFormEmail(mysqli $connection, $email)
 
 /**
  * Проверяет логин регистрации
- * @param $login - введенный логин
+ * @param string $login - введенный логин
  * @return string|null
  */
-function validateFormLogin($login)
+function validateFormLogin(string $login):?string
 {
     if (empty($login)) {
         return 'Необходимо заполнить логин!';
@@ -62,11 +66,11 @@ function validateFormLogin($login)
 }
 
 /**
- * Проверяет пароль оегистрации
- * @param $password
+ * Проверяет пароль регистрации
+ * @param string $password
  * @return string|null
  */
-function validateFormPassword($password)
+function validateFormPassword(string $password):?string
 {
     if (empty($password)) {
         return 'Необходимо заполнить пароль!';
@@ -78,12 +82,12 @@ function validateFormPassword($password)
 
 /**
  * Проверяет повтор пароля с ранее введенным
- * @param $password - ранее введенный пароль
- * @param $passwordRepeat - повтор пароля
+ * @param string $password - ранее введенный пароль
+ * @param string $passwordRepeat - повтор пароля
  * @return string|null
 
  */
-function validateFormPasswordRepeat($password, $passwordRepeat)
+function validateFormPasswordRepeat($password, $passwordRepeat):?string
 {
     if (empty($passwordRepeat)) {
         return 'Необходимо заполнить пароль!';
@@ -91,6 +95,24 @@ function validateFormPasswordRepeat($password, $passwordRepeat)
 
     if ($passwordRepeat !== $password) {
         return 'Введенный пароль не совпадает';
+    }
+
+    return NULL;
+}
+
+/**
+ * Проверяет mime тип файла на соответствие разрешенным
+ * @param $avatarMimeType - mime тип загружаемого файла
+ * @return string|null
+ */
+function validateFormAvatar($avatarMimeType)
+{
+    $allowedMimeType = ['image/png', 'image/jpeg', 'image/gif', 'image/x-png'];
+
+    if (isset($avatarMimeType)) {
+        if (!in_array($avatarMimeType, $allowedMimeType)) {
+            return 'Разрешенные разрешения image/png, image/jpeg, image/gif, image/x-png';
+        }
     }
 
     return NULL;

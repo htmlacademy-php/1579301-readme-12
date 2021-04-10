@@ -12,8 +12,8 @@ $formHandledData['errors'] = [];
 $formHandledData['data'] = [];
 
 if (!empty($_POST)) {
-    var_export($_FILES);
-    $formHandledData = registrationUser($connection, $_POST, $_FILES);
+    $data = filterFormRegistration($_POST, $_FILES);
+    $formHandledData = registrationUser($connection, $data);
 }
 
 
