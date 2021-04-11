@@ -362,4 +362,40 @@ function addHashtag(mysqli $connection, array $hashtag, int $lastPostId)
     }
 }
 
+/**
+ * Проверяет существует ли пользователь с переданным email
+ * @param mysqli $connection
+ * @param string $email - переданный email
+ * @return bool
+ */
+function issetEmail(mysqli $connection, string $email)
+{
+    $sql = "SELECT * FROM `user` WHERE `email` = ?";
 
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 's', $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_store_result($stmt);
+
+    return mysqli_stmt_num_rows($stmt);
+}
+
+/**
+ * Добавляет пользователя в базу данных
+ * @param mysqli $connection
+ * @param $data - переданный отфильтрованный массив с данными
+ */
+function addUser(mysqli $connection, $data)
+{
+    $sql = "INSERT INTO `user` VALUES (NULL, now(), ?, ?, ?, ?)";
+
+    $passwordHash = password_hash($data['password'], PASSWORD_DEFAULT);
+
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 'ssss', $data['email'], $data['login'], $passwordHash, $data['avatar']['name']);
+    $result = mysqli_stmt_execute($stmt);
+
+    if (!$result) {
+        echo 'Ошибка' . mysqli_error($connection);
+    }
+}
