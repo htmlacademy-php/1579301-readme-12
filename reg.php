@@ -1,12 +1,7 @@
 <?php
 
-require_once 'functions/db.php';
 require_once 'bootstrap.php';
-require_once 'functions/template.php';
-require_once 'functions/request.php';
-require_once 'functions/filters.php';
-require_once 'functions/validators/validate-form-registration.php';
-require_once 'functions/actions.php';
+
 
 $formHandledData['errors'] = [];
 $formHandledData['data'] = [];
@@ -22,7 +17,6 @@ $title = 'Создание поста';
 $is_auth = rand(0, 1);
 
 $user_name = 'Dima'; // укажите здесь ваше имя
-
 
 $registrationContent = include_template('registration.php', ['errors' => $formHandledData['errors'], 'data' => $formHandledData['data']]);
 

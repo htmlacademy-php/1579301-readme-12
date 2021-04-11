@@ -42,18 +42,23 @@ if (isset($_POST['submit'])) {
 
     switch ($_POST['submit']) {
         case CONTENT_TYPE_TEXT:
-            $formHandledData = addText($connection, $_POST);
+            $data = filterFormText($_POST);
+            $formHandledData = addText($connection, $data);
             break;
         case CONTENT_TYPE_QUOTE:
-            $formHandledData = addQuote($connection, $_POST);
+            $data = filterFormQuote($_POST);
+            $formHandledData = addQuote($connection, $data);
             break;
         case CONTENT_TYPE_PHOTO:
-            $formHandledData = addPhoto($connection, $_POST, $_FILES);
+            $data = filterFormPhoto($_POST, $_FILES);
+            $formHandledData = addPhoto($connection, $data);
             break;
         case CONTENT_TYPE_VIDEO:
-            $formHandledData = addVideo($connection, $_POST);
+            $data = filterFormVideo($_POST);
+            $formHandledData = addVideo($connection, $data);
             break;
         case CONTENT_TYPE_LINK:
+            $data = filterFormLink($_POST);
             $formHandledData = addLink($connection, $_POST);
             break;
     }

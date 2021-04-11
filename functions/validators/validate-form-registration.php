@@ -41,6 +41,10 @@ function validateFormEmail(mysqli $connection, string $email):?string
         return 'Введите корректный email!';
     }
 
+    if (mb_strlen($email) > 100) {
+        return 'Превышена длина в 100 символов!';
+    }
+
     if ($email) {
         $issetEmail = issetEmail($connection, $email);
         if ($issetEmail) {
@@ -60,6 +64,10 @@ function validateFormLogin(string $login):?string
 {
     if (empty($login)) {
         return 'Необходимо заполнить логин!';
+    }
+
+    if (mb_strlen($login) > 50) {
+        return 'Превышено количество символов!';
     }
 
     return NULL;

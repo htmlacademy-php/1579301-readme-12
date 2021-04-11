@@ -2,10 +2,10 @@
 
 /**
  * Проверяет введенные данные для формы цитаты
- * @param $data - входящий суперглобальный массив $_POST
+ * @param $data - отфильтрованный суперглобальный массив $_POST
  * @return array
  */
-function validateFormPhoto(array $data, array $files)
+function validateFormPhoto(array $data)
 {
     $errors = [];
 
@@ -17,7 +17,7 @@ function validateFormPhoto(array $data, array $files)
         $errors['photo-url'] = $error;
     }
 
-    if ($error = validateFormPhotoFile($files['photo']['type'])) {
+    if ($error = validateFormPhotoFile($data['photo']['type'])) {
         $errors['photo'] = $error;
     }
 

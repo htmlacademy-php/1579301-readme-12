@@ -3,13 +3,11 @@
 /**
  * Добавляет текстовый пост на страницу
  * @param $connection - подключение к бд
- * @param array $data - глобальный массив $_POST
+ * @param array $data - отфильтрованный массив $_POST
  * @return array
  */
 function addText(mysqli $connection, array $data):array
 {
-    $data = filterFormText($data);
-
     $errors = validateFormText($data);
 
     if (!$errors) {
@@ -33,14 +31,12 @@ function addText(mysqli $connection, array $data):array
 /**
  * Добавляет пост-цитату на страницу
  * @param $connection - подключение к бд
- * @param array $data - глобальный массив $_POST
+ * @param array $data - отфильтрованный массив $_POST
  * @return array
  */
 
 function addQuote(mysqli $connection, array $data):array
 {
-    $data = filterFormQuote($data);
-
     $errors = validateFormQuote($data);
 
     if (!$errors) {
@@ -64,19 +60,16 @@ function addQuote(mysqli $connection, array $data):array
 /**
  * Добавляет пост-фото на страницу
  * @param $connection - подключение к бд
- * @param array $dataPost - глобальный массив $_POST
- * @param array $dataFiles - - глобальный массив $_FILES
+ * @param array $data - отфильтрованный глобальный массив $_POST и $_FILES
  * @return array
  */
-function addPhoto(mysqli $connection, array $dataPost, array $dataFiles)
+function addPhoto(mysqli $connection, array $data)
 {
-    $data = filterFormPhoto($dataPost, $dataFiles);
-
-    $errors = validateFormPhoto($dataPost, $dataFiles);
+    $errors = validateFormPhoto($data);
 
     if (!$errors) {
 
-        if (!empty($dataFiles['photo']['name'])) {
+        if (!empty($data['photo']['name'])) {
             uploadPhoto($data);
         } else {
             $data['photo']['name'] = uploadPhotoUrl($data);
@@ -102,13 +95,11 @@ function addPhoto(mysqli $connection, array $dataPost, array $dataFiles)
 /**
  * Добавляет пост-видео на страницу
  * @param $connection - подключение к бд
- * @param array $data - глобальный массив $_POST
+ * @param array $data - отфильтрованный глобальный массив $_POST
  * @return array
  */
 function addVideo(mysqli $connection, array $data)
 {
-    $data = filterFormVideo($data);
-
     $errors = validateFormVideo($data);
 
     if (!$errors) {
@@ -134,13 +125,11 @@ function addVideo(mysqli $connection, array $data)
 /**
  * Добавляет пост-ссылку на страницу
  * @param $connection - подключение к бд
- * @param array $data - глобальный массив $_POST
+ * @param array $data - отфильтрованный глобальный массив $_POST
  * @return array
  */
 function addLink(mysqli $connection, array $data)
 {
-    $data = filterFormLink($data);
-
     $errors = validateFormLink($data);
 
     if (!$errors) {
@@ -165,7 +154,7 @@ function addLink(mysqli $connection, array $data)
 /**
  * Регистрирует нового пользователя в базу данных
  * @param mysqli $connection
- * @param array $filteredData - отфильтрованный массыв $_POST и $_FILES
+ * @param array $filteredData - отфильтрованный массив $_POST и $_FILES
  * @return array
  */
 function registrationUser(mysqli $connection, array $filteredData)

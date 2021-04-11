@@ -39,7 +39,7 @@ function validateComment(array $data): bool
 function uploadPhoto($data)
 {
     $fileName = $data['photo']['name'];
-    $filePath = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
+    $filePath = APP_DIR . '/uploads/';
 
     move_uploaded_file($data['photo']['tmp_name'], $filePath . $fileName);
 }
@@ -61,7 +61,7 @@ function uploadPhotoUrl($data)
     if (in_array($mime, $allowedPics)) {
 
         $downloadFile = file_get_contents($filterUrl);
-        $filePath = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
+        $filePath = APP_DIR . '/uploads/';
         file_put_contents($filePath . $fileName, $downloadFile);
     }
 
@@ -69,7 +69,7 @@ function uploadPhotoUrl($data)
 }
 
 /**
- * Загружает аватар на сертвер
+ * Загружает аватар на сервер
  * @param $data - отфильтрованные данные массива $_FILES
  */
 function uploadAvatar($data)
