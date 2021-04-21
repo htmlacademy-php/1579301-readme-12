@@ -186,9 +186,8 @@ function authUser(mysqli $connection, array $filteredData)
     $errors = validateFormAuth($connection, $filteredData);
 
     if (!$errors) {
-        session_start();
         $_SESSION['user_id'] = getUserIdByLogin($connection, $filteredData['login']);
-        echo 'Вы авторизовались!';
+        header('Location: ' . 'feed.php');
     }
 
     return [

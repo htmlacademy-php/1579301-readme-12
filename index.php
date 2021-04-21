@@ -11,6 +11,8 @@ $title = 'Регистрация и аутентификация';
 $formHandledData['errors'] = [];
 $formHandledData['data'] = [];
 
+var_export($_SESSION);
+
 if (!empty($_POST)) {
     $data = filterFormAuth($_POST);
     $formHandledData = authUser($connection, $data);
