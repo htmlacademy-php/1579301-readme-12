@@ -11,7 +11,6 @@ if (!empty($_POST)) {
     $formHandledData = registrationUser($connection, $data);
 }
 
-
 $title = 'Создание поста';
 
 $is_auth = rand(0, 1);

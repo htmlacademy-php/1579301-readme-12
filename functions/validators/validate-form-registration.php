@@ -85,7 +85,6 @@ function validateFormPassword(string $password):?string
     }
 
     return NULL;
-
 }
 
 /**

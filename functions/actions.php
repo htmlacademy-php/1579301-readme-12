@@ -174,3 +174,25 @@ function registrationUser(mysqli $connection, array $filteredData)
         'errors' => $errors,
     ];
 }
+
+/**
+ * Аутентифицирует пользователя
+ * @param mysqli $connection
+ * @param array $filteredData - отфильтрованный массив $_POST
+ * @return array
+ */
+function authUser(mysqli $connection, array $filteredData)
+{
+    $errors = validateFormAuth($connection, $filteredData);
+
+    if (!$errors) {
+        session_start();
+        $_SESSION['user_id'] = getUserIdByLogin($connection, $filteredData['login']);
+        echo 'Вы авторизовались!';
+    }
+
+    return [
+        'data' => $filteredData,
+        'errors' => $errors,
+    ];
+}

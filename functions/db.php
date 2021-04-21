@@ -399,3 +399,66 @@ function addUser(mysqli $connection, $data)
         echo 'Ошибка' . mysqli_error($connection);
     }
 }
+
+/**
+ * Проверяет существует ли пользователь с переданным login
+ * @param mysqli $connection
+ * @param string $login - переданный login
+ * @return bool
+ */
+function issetLogin(mysqli $connection, string $login)
+{
+    $sql = "SELECT * FROM `user` WHERE `login` = ?";
+
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 's', $login);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_store_result($stmt);
+
+    return mysqli_stmt_num_rows($stmt);
+}
+
+/**
+ * Проверяет существует ли пользователь с переданным логином и паролем
+ * @param mysqli $connection
+ * @param string $login - переданный login
+ * @param string $password - переданные пароль
+ * @return bool
+ */
+function issetPassword(mysqli $connection, string $login, string $password)
+{
+    $sql = "SELECT `password` FROM `user` WHERE `login` = ?";
+
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 's', $login);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $passwordDb);
+    mysqli_stmt_fetch($stmt);
+
+    if (password_verify($password, $passwordDb)) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Получает id пользователя по логину
+ * @param mysqli $connection
+ * @param $login - переданные login
+ * @return int
+
+ */
+function getUserIdByLogin(mysqli $connection, $login):int
+{
+    $sql = "SELECT `id` FROM `user` WHERE `login` = ?";
+
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 's', $login);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $userId);
+    mysqli_stmt_fetch($stmt);
+
+    return $userId;
+}
+
