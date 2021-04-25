@@ -2,18 +2,23 @@
 
 require_once 'bootstrap.php';
 
-if (!isAuth($_SESSION)) {
+$userData = [];
+
+$id = getIdFromParams($_GET);
+
+if (!authBySession($_SESSION)) {
     header('location:' . '/');
+} else {
+    $userData = getUserById($connection , $_SESSION['user_id']);
+    $subscribedPosts = getSubscribedPosts($connection, $_SESSION['user_id'], $id);
 }
-
-$is_auth = rand(0, 1);
-
-$user_name = 'Dima'; // укажите здесь ваше имя
 
 $title = 'Регистрация и аутентификация';
 
-$feedContent = include_template('feed.php', []);
+$contentType = getContentTypes($connection);
 
-$layoutContent = include_template('layout.php', ['mainContent' => $feedContent, 'title' => $title, 'is_auth' => isAuth($_SESSION), 'user_name' => $user_name]);
+$feedContent = include_template('feed.php', ['id' => $id, 'contentType' => $contentType, 'subscribedPosts' => $subscribedPosts]);
+
+$layoutContent = include_template('layout.php', ['mainContent' => $feedContent, 'title' => $title, 'is_auth' => authBySession($_SESSION), 'userData' => $userData]);
 
 print $layoutContent;

@@ -5,7 +5,7 @@
  * @param array $session - входящий глобальный массив $_SESSION
  * @return bool
  */
-function isAuth(array $session)
+function authBySession(array $session)
 {
     if (isset($session['user_id'])) {
         return true;

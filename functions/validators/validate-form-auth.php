@@ -1,6 +1,12 @@
 <?php
 
-function validateFormAuth(mysqli $connection, $data)
+/**
+ * Проверяет введенные данные для формы аутентификации
+ * @param mysqli $connection
+ * @param array $data - отфильтрованный массив $_POST
+ * @return array
+ */
+function validateFormAuth(mysqli $connection, array $data):array
 {
     $errors = [];
 
@@ -32,8 +38,7 @@ function validateFormAuthLogin(mysqli $connection, string $login):?string
     }
 
     if ($login) {
-        $issetLogin = issetLogin($connection, $login);
-        if (!$issetLogin) {
+        if (!issetLogin($connection, $login)) {
             return 'Пользователя с таким логином не существует';
         }
     }

@@ -34,7 +34,6 @@ function addText(mysqli $connection, array $data):array
  * @param array $data - отфильтрованный массив $_POST
  * @return array
  */
-
 function addQuote(mysqli $connection, array $data):array
 {
     $errors = validateFormQuote($data);
@@ -186,7 +185,7 @@ function authUser(mysqli $connection, array $filteredData)
     $errors = validateFormAuth($connection, $filteredData);
 
     if (!$errors) {
-        $_SESSION['user_id'] = getUserIdByLogin($connection, $filteredData['login']);
+        $_SESSION['user_id'] = getUserByLogin($connection, $filteredData['login'])['userId'];
         header('Location: ' . 'feed.php');
     }
 

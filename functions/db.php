@@ -443,22 +443,80 @@ function issetPassword(mysqli $connection, string $login, string $password)
 }
 
 /**
- * Получает id пользователя по логину
+ * Получает данные о пользователе по логину
  * @param mysqli $connection
  * @param $login - переданные login
- * @return int
+ * @return array
 
  */
-function getUserIdByLogin(mysqli $connection, $login):int
+function getUserByLogin(mysqli $connection, $login):array
 {
-    $sql = "SELECT `id` FROM `user` WHERE `login` = ?";
+    $sql = "SELECT * FROM `user` WHERE `login` = ?";
 
     $stmt = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($stmt, 's', $login);
     mysqli_stmt_execute($stmt);
-    mysqli_stmt_bind_result($stmt, $userId);
+    mysqli_stmt_bind_result($stmt, $userId, $createdTime, $email, $userlogin, $userPassword, $avatar);
     mysqli_stmt_fetch($stmt);
 
-    return $userId;
+    return [
+        'userId' => $userId,
+        'createdTime' => $createdTime,
+        'email' => $email,
+        'login' => $userlogin,
+        'userPassword' => $userPassword,
+        'avatar' => $avatar,
+    ];
+}
+
+/**
+ * Получает данные о пользователе по id
+ * @param mysqli $connection
+ * @param $userId - переданный id из сессии
+ * @return array
+ */
+function getUserById(mysqli $connection, int $userId):array
+{
+    $sql = "SELECT * FROM `user` WHERE `id` = ?";
+
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $userId);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $userId, $createdTime, $email, $userlogin, $userPassword, $avatar);
+    mysqli_stmt_fetch($stmt);
+
+    return [
+        'userId' => $userId,
+        'createdTime' => $createdTime,
+        'email' => $email,
+        'login' => $userlogin,
+        'userPassword' => $userPassword,
+        'avatar' => $avatar,
+    ];
+}
+
+/**
+ * Получает посты пользователя на которого подписан
+ * @param mysqli $connection
+ * @param int $userId - id залогиненного пользователя
+ * @param int|null $id - id типа контента
+ * @return array
+ */
+function getSubscribedPosts(mysqli $connection, int $userId, ?int $id):array
+{
+    $sql = "SELECT * FROM post LEFT JOIN subscribe ON subscribe.subscriber_id = {$userId} LEFT JOIN `content_type` ON post.content_type_id = content_type.id 
+            LEFT JOIN `user` ON user.id = post.user_id WHERE post.user_id = subscribe.author_id";
+
+    if ($id) {
+        $sql .= ' AND `content_type_id` = ' . $id . '';
+    }
+
+    $result = mysqli_query($connection, $sql);
+
+    if ($result) {
+        return mysqli_fetch_all($result, MYSQLI_ASSOC) ?? [];
+    }
+    echo "Ошибка" . mysqli_error($connection);
+    exit();
 }
 

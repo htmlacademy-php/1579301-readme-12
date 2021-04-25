@@ -1,11 +1,14 @@
 <?php
 
-require_once 'functions/db.php';
-require_once 'functions/template.php';
-require_once 'functions/request.php';
 require_once 'bootstrap.php';
 
 $id = getIdFromParams($_GET);
+
+if (!authBySession($_SESSION)) {
+    header('location:' . '/');
+} else {
+    $userData = getUserById($connection , $_SESSION['user_id']);
+}
 
 $sort = $_GET;
 $sort['order'] = $sort['order'] ?? '';
@@ -46,6 +49,6 @@ $title = 'readme';
 
 $mainContent = include_template('main.php', ['posts' => $posts, 'contentType' => $contentType, 'criteria' => $criteria]);
 
-$layoutContent = include_template('layout.php', ['mainContent' => $mainContent, 'title' => $title, 'is_auth' => $is_auth, 'user_name' => $user_name]);
+$layoutContent = include_template('layout.php', ['mainContent' => $mainContent, 'title' => $title, 'is_auth' => authBySession($_SESSION), 'userData' => $userData]);
 
 print $layoutContent;
