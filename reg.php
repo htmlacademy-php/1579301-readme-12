@@ -11,15 +11,10 @@ if (!empty($_POST)) {
     $formHandledData = registrationUser($connection, $data);
 }
 
-
 $title = 'Создание поста';
-
-$is_auth = rand(0, 1);
-
-$user_name = 'Dima'; // укажите здесь ваше имя
 
 $registrationContent = include_template('registration.php', ['errors' => $formHandledData['errors'], 'data' => $formHandledData['data']]);
 
-$layoutContent = include_template('layout.php', ['mainContent' => $registrationContent, 'title' => $title, 'is_auth' => $is_auth, 'user_name' => $user_name]);
+$layoutContent = include_template('layout.php', ['mainContent' => $registrationContent, 'title' => $title, 'is_auth' => authBySession($_SESSION)]);
 
 print $layoutContent;

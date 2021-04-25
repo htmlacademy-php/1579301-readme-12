@@ -143,3 +143,24 @@ function filterFormRegistration(array $dataPost,  array $dataFiles):array
 
     return $result;
 }
+
+/**
+ * Фильтрует данные формы аутентификации
+ * @param array $data - глобальный массив $_POST
+ * @return array
+ */
+function filterFormAuth(array $data):array
+{
+    $result = [];
+
+    $fields = [
+        'login',
+        'password',
+    ];
+
+    foreach ($fields as $field) {
+        $result[$field] = htmlspecialchars($data[$field] ?? '');
+    }
+
+    return $result;
+}

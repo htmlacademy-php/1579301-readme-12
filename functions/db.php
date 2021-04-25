@@ -399,3 +399,124 @@ function addUser(mysqli $connection, $data)
         echo 'Ошибка' . mysqli_error($connection);
     }
 }
+
+/**
+ * Проверяет существует ли пользователь с переданным login
+ * @param mysqli $connection
+ * @param string $login - переданный login
+ * @return bool
+ */
+function issetLogin(mysqli $connection, string $login)
+{
+    $sql = "SELECT * FROM `user` WHERE `login` = ?";
+
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 's', $login);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_store_result($stmt);
+
+    return mysqli_stmt_num_rows($stmt);
+}
+
+/**
+ * Проверяет существует ли пользователь с переданным логином и паролем
+ * @param mysqli $connection
+ * @param string $login - переданный login
+ * @param string $password - переданные пароль
+ * @return bool
+ */
+function issetPassword(mysqli $connection, string $login, string $password)
+{
+    $sql = "SELECT `password` FROM `user` WHERE `login` = ?";
+
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 's', $login);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $passwordDb);
+    mysqli_stmt_fetch($stmt);
+
+    if (password_verify($password, $passwordDb)) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Получает данные о пользователе по логину
+ * @param mysqli $connection
+ * @param $login - переданные login
+ * @return array
+
+ */
+function getUserByLogin(mysqli $connection, $login):array
+{
+    $sql = "SELECT * FROM `user` WHERE `login` = ?";
+
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 's', $login);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $userId, $createdTime, $email, $userlogin, $userPassword, $avatar);
+    mysqli_stmt_fetch($stmt);
+
+    return [
+        'userId' => $userId,
+        'createdTime' => $createdTime,
+        'email' => $email,
+        'login' => $userlogin,
+        'userPassword' => $userPassword,
+        'avatar' => $avatar,
+    ];
+}
+
+/**
+ * Получает данные о пользователе по id
+ * @param mysqli $connection
+ * @param $userId - переданный id из сессии
+ * @return array
+ */
+function getUserById(mysqli $connection, int $userId):array
+{
+    $sql = "SELECT * FROM `user` WHERE `id` = ?";
+
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $userId);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $userId, $createdTime, $email, $userlogin, $userPassword, $avatar);
+    mysqli_stmt_fetch($stmt);
+
+    return [
+        'userId' => $userId,
+        'createdTime' => $createdTime,
+        'email' => $email,
+        'login' => $userlogin,
+        'userPassword' => $userPassword,
+        'avatar' => $avatar,
+    ];
+}
+
+/**
+ * Получает посты пользователя на которого подписан
+ * @param mysqli $connection
+ * @param int $userId - id залогиненного пользователя
+ * @param int|null $id - id типа контента
+ * @return array
+ */
+function getSubscribedPosts(mysqli $connection, int $userId, ?int $id):array
+{
+    $sql = "SELECT * FROM post LEFT JOIN subscribe ON subscribe.subscriber_id = {$userId} LEFT JOIN `content_type` ON post.content_type_id = content_type.id 
+            LEFT JOIN `user` ON user.id = post.user_id WHERE post.user_id = subscribe.author_id";
+
+    if ($id) {
+        $sql .= ' AND `content_type_id` = ' . $id . '';
+    }
+
+    $result = mysqli_query($connection, $sql);
+
+    if ($result) {
+        return mysqli_fetch_all($result, MYSQLI_ASSOC) ?? [];
+    }
+    echo "Ошибка" . mysqli_error($connection);
+    exit();
+}
+

@@ -34,7 +34,6 @@ function addText(mysqli $connection, array $data):array
  * @param array $data - отфильтрованный массив $_POST
  * @return array
  */
-
 function addQuote(mysqli $connection, array $data):array
 {
     $errors = validateFormQuote($data);
@@ -167,6 +166,27 @@ function registrationUser(mysqli $connection, array $filteredData)
 
     if (!empty($filteredData['avatar']['name'])) {
         uploadAvatar($filteredData);
+    }
+
+    return [
+        'data' => $filteredData,
+        'errors' => $errors,
+    ];
+}
+
+/**
+ * Аутентифицирует пользователя
+ * @param mysqli $connection
+ * @param array $filteredData - отфильтрованный массив $_POST
+ * @return array
+ */
+function authUser(mysqli $connection, array $filteredData)
+{
+    $errors = validateFormAuth($connection, $filteredData);
+
+    if (!$errors) {
+        $_SESSION['user_id'] = getUserByLogin($connection, $filteredData['login'])['userId'];
+        header('Location: ' . 'feed.php');
     }
 
     return [
